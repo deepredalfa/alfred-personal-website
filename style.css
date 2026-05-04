@@ -328,11 +328,8 @@ ul { list-style: none; }
 }
 
 /* ===== ABOUT ===== */
-.about__inner {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 5rem;
-  align-items: center;
+.about__text {
+  max-width: 680px;
 }
 
 .about__text p {
@@ -340,43 +337,6 @@ ul { list-style: none; }
   margin-top: 1rem;
   font-size: 1.0625rem;
   line-height: 1.75;
-}
-
-.about__stats {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 1rem;
-}
-
-.stat-card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: 1.5rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  box-shadow: var(--shadow-sm);
-  transition: box-shadow var(--transition), transform var(--transition);
-}
-
-.stat-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-
-.stat-card__number {
-  font-size: 2rem;
-  font-weight: 800;
-  color: var(--color-accent);
-  line-height: 1;
-  letter-spacing: -0.02em;
-}
-
-.stat-card__label {
-  font-size: 0.875rem;
-  color: var(--color-text-muted);
-  font-weight: 500;
 }
 
 /* ===== SKILLS ===== */
@@ -618,10 +578,7 @@ ul { list-style: none; }
     margin-inline: auto;
   }
 
-  .about__inner {
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
+
 }
 
 @media (max-width: 900px) {
