@@ -11,15 +11,33 @@ export default {
         mono: ['"JetBrains Mono"', '"Fira Code"', 'monospace'],
       },
       keyframes: {
-        // Slow, graceful settle — like coffee dripping into a cup
-        brew: {
-          '0%':   { opacity: '0', transform: 'translateY(7px)' },
-          '100%': { opacity: '1', transform: 'translateY(0)' },
+        // Slow ambient blobs — large blurred shapes that drift behind the hero
+        'blob-1': {
+          '0%, 100%': { transform: 'translate(0px,   0px)   scale(1)'   },
+          '33%':       { transform: 'translate(40px,  -60px) scale(1.08)' },
+          '66%':       { transform: 'translate(-25px,  30px) scale(0.94)' },
+        },
+        'blob-2': {
+          '0%, 100%': { transform: 'translate(0px,   0px)   scale(1)'   },
+          '33%':       { transform: 'translate(-35px, 55px)  scale(0.92)' },
+          '66%':       { transform: 'translate(25px, -25px)  scale(1.06)' },
+        },
+        'blob-3': {
+          '0%, 100%': { transform: 'translate(0px,   0px)   scale(1)'   },
+          '33%':       { transform: 'translate(50px,  35px)  scale(1.1)'  },
+          '66%':       { transform: 'translate(-35px, -20px) scale(0.92)' },
+        },
+        // Section scroll-reveal — subtle upward drift into view
+        'fade-up': {
+          '0%':   { opacity: '0', transform: 'translateY(18px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)'    },
         },
       },
       animation: {
-        // "both" fill: hides phrase during its delay AND holds opacity-1 after settling
-        brew: 'brew 1.1s cubic-bezier(0.16, 1, 0.3, 1) both',
+        'blob-1':  'blob-1  9s  ease-in-out infinite',
+        'blob-2':  'blob-2  12s ease-in-out infinite',
+        'blob-3':  'blob-3  15s ease-in-out infinite',
+        'fade-up': 'fade-up 0.55s ease-out both',
       },
     },
   },
