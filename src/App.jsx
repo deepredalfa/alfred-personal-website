@@ -191,13 +191,28 @@ function useScrollReveal(threshold = 0.08) {
 function GlobalBackground() {
   return (
     <div aria-hidden="true" className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      {/* Base fill */}
       <div className="absolute inset-0 bg-stone-50" />
-      {/* Indigo dot grid — faint technical texture across the whole site */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,#6366f10e_1px,transparent_1px)] bg-[size:28px_28px]" />
-      {/* Three slow ambient blobs — different speeds so they never sync */}
-      <div className="absolute -top-40 -left-20   w-[600px] h-[600px] rounded-full bg-indigo-200/30 blur-3xl animate-blob-1" />
-      <div className="absolute top-[55%] -right-32 w-[520px] h-[520px] rounded-full bg-violet-200/20 blur-3xl animate-blob-2" />
-      <div className="absolute -bottom-32 left-1/4 w-[460px] h-[460px] rounded-full bg-sky-200/20   blur-3xl animate-blob-3" />
+
+      {/*
+        Aurora blobs — very large, heavily blurred, slow drift.
+        Four blobs at different corners/positions overlap and blend,
+        creating a soft colour-wash effect that matches the indigo/violet/sky/emerald palette.
+        All opacity kept low so text sections stay crisp even where section backgrounds are semi-transparent.
+      */}
+      {/* Indigo wash — top-left anchor */}
+      <div className="absolute -top-64 -left-48 w-[900px] h-[800px] rounded-full bg-indigo-300/20 blur-[120px] animate-aurora-1" />
+      {/* Sky wash — top-right anchor */}
+      <div className="absolute -top-32 -right-48 w-[800px] h-[700px] rounded-full bg-sky-300/15 blur-[110px] animate-aurora-2" />
+      {/* Violet wash — centre drift */}
+      <div className="absolute top-[40%] left-[20%] w-[700px] h-[700px] rounded-full bg-violet-300/15 blur-[130px] animate-aurora-3" />
+      {/* Emerald wash — bottom accent */}
+      <div className="absolute bottom-0 right-[15%] w-[750px] h-[600px] rounded-full bg-emerald-200/12 blur-[120px] animate-aurora-4" />
+      {/* Blue accent — bottom-left fill */}
+      <div className="absolute -bottom-32 -left-24 w-[600px] h-[600px] rounded-full bg-blue-200/15 blur-[100px] animate-aurora-2" style={{ animationDelay: '-10s' }} />
+
+      {/* Subtle dot grid on top — faint technical texture */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,#6366f108_1px,transparent_1px)] bg-[size:28px_28px]" />
     </div>
   )
 }
