@@ -15,7 +15,7 @@
 //   App         — Root component
 // ─────────────────────────────────────────────────────────────────────────────
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import {
   Terminal, Layers, Code2, Server, Cloud, Workflow,
   Activity, Shield, Network, Database, Users,
@@ -164,6 +164,20 @@ const PROJECTS = [
       impact: `Delivers a production-grade analytical foundation processing millions of quarterly property records with full ACID guarantees via Delta Lake time-travel and versioning. dbt enforces lineage documentation and automated data quality testing across all models. The AI layer allows non-technical stakeholders to interrogate market trends in plain English — correlating property prices with interest rate movements, migration patterns, and affordability metrics — without writing a single query. GitHub Actions CI/CD enforces dbt tests and Python linting on every push.`,
     },
   },
+]
+
+// UPDATE: Edit phrase text here to update the personal introduction copy.
+// delay   — seconds after the section enters the viewport before this phrase appears
+// indent  — visually indents the core-value lines, like a typographic list
+// gap     — adds breathing room *after* this phrase (paragraph break between sentences)
+const INTRO_PHRASES = [
+  { text: 'A senior data architect',             delay: 0,    indent: false, gap: false },
+  { text: 'built on simple principles:',         delay: 0.65, indent: false, gap: false },
+  { text: 'strong black coffee,',               delay: 1.35, indent: true,  gap: false },
+  { text: 'humanity over dogma,',               delay: 2.05, indent: true,  gap: false },
+  { text: 'and kindness in every connection.',  delay: 2.75, indent: true,  gap: true  },
+  { text: 'I believe the best systems',         delay: 3.85, indent: false, gap: false },
+  { text: 'are built by keeping things human.', delay: 4.55, indent: false, gap: false },
 ]
 
 // ─── ACCENT MAP ───────────────────────────────────────────────────────────────
@@ -598,28 +612,63 @@ function ProjectsSection() {
 // ─── PERSONAL ─────────────────────────────────────────────────────────────────
 
 function PersonalSection() {
+  const [brewing, setBrewing] = useState(false)
+  const ref = useRef(null)
+
+  // Trigger once when the section scrolls into view — never replays
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setBrewing(true)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.3 }
+    )
+    if (ref.current) observer.observe(ref.current)
+    return () => observer.disconnect()
+  }, [])
+
   return (
     <section id="about" className="py-24 bg-slate-950">
       <div className="max-w-6xl mx-auto px-6">
-        <div className="mb-12">
-          <span className="text-xs font-mono text-emerald-400 tracking-widest uppercase">The Human Element</span>
+
+        {/* Section header — amber accent marks the shift from technical to human */}
+        <div className="mb-16">
+          <span className="text-xs font-mono text-amber-500/70 tracking-widest uppercase">
+            The Human Element
+          </span>
           <h2 className="text-4xl font-bold text-slate-100 mt-2">Beyond the Terminal</h2>
         </div>
 
-        {/* UPDATE: Replace this placeholder with your personal story, passions, and interests */}
-        <div className="rounded-2xl border border-dashed border-slate-800 bg-slate-900/20 p-16 md:p-24 flex flex-col items-center justify-center text-center gap-4">
-          <div className="w-14 h-14 rounded-2xl bg-slate-800/80 flex items-center justify-center">
-            <Users size={22} className="text-slate-600" aria-hidden="true" />
-          </div>
-          <div>
-            <p className="text-slate-500 text-sm font-mono tracking-wide">
-              Personal story, passions & adventures — coming soon.
-            </p>
-            <p className="text-slate-600 text-xs mt-1">
-              {/* UPDATE: Replace with your personal content */}
-            </p>
-          </div>
+        {/*
+          Brewing reveal — phrases drip in sequentially.
+          The left border acts as a typographic pull-quote marker (warm amber, low opacity).
+          The indent on core-value lines mimics a prose list without bullet points.
+        */}
+        <div
+          ref={ref}
+          className="max-w-2xl border-l border-amber-500/20 pl-8"
+          aria-label="Personal introduction"
+        >
+          {INTRO_PHRASES.map((phrase, i) => (
+            <span
+              key={i}
+              className={[
+                'block font-light text-stone-100 leading-[1.35] tracking-tight',
+                'text-3xl md:text-4xl',
+                phrase.indent ? 'pl-5'  : '',
+                phrase.gap    ? 'mb-7'  : '',
+                brewing ? 'animate-brew' : 'opacity-0',
+              ].join(' ')}
+              style={{ animationDelay: `${phrase.delay}s` }}
+            >
+              {phrase.text}
+            </span>
+          ))}
         </div>
+
       </div>
     </section>
   )
