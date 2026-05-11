@@ -1,14 +1,29 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <style>
+    @keyframes color-cycle {
+      0%, 100% { fill: #e0e7ff; }
+      40%       { fill: #2dd4bf; }
+      75%       { fill: #a78bfa; }
+    }
+    .aj { animation: color-cycle 3.5s ease-in-out infinite; }
+  </style>
+
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
-      <stop offset="0%"   stop-color="#312e81"/>
-      <stop offset="100%" stop-color="#4c1d95"/>
+      <stop offset="0%"   stop-color="#1e1b4b"/>
+      <stop offset="100%" stop-color="#3b0764"/>
     </linearGradient>
   </defs>
 
-  <!-- Rounded-square tile -->
+  <!-- Dark rounded tile -->
   <rect width="32" height="32" rx="7" fill="url(#bg)"/>
 
-  <!-- Lightning bolt — Z-shaped, parallel outer edges, white fill -->
-  <path d="M17,4 L6,18 H16 V28 L27,14 H17 Z" fill="white" opacity="0.95"/>
+  <!-- AJ — cycles through indigo-white → teal → violet → back -->
+  <text class="aj"
+    x="16" y="22"
+    font-family="system-ui,-apple-system,BlinkMacSystemFont,sans-serif"
+    font-weight="900"
+    font-size="16"
+    text-anchor="middle"
+    letter-spacing="-0.5">AJ</text>
 </svg>
