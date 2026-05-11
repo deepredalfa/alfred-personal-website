@@ -40,8 +40,8 @@ const INTRO = {
   name:  'Alfred Johnson.',
   title: 'Senior Data Engineer & Architect',
   // UPDATE: Edit these two bio paragraphs
-  bio1:  'I design the systems that move data from messy to meaningful — Lakehouse platforms, distributed pipelines, and the governance layers that make enterprise data trustworthy.',
-  bio2:  'With 14 years across fintech, telco, and retail, I keep things human, build for the long run, and stay grounded in simple principles.',
+  bio1:  'Senior Data Engineer with 14 years across fintech, telco, and retail. Lakehouse architecture, Azure Databricks, Delta Lake, Apache Spark — and a strong foundation in API design, event-driven systems, and enterprise integration.',
+  bio2:  'Strong coffee. Simple principles.',
   cta1:  'My Projects',
   cta2:  'Connect on LinkedIn',
 }
@@ -301,15 +301,9 @@ function IntroSection() {
 
       <div className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 w-full">
 
-        {/* Availability badge */}
-        <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-emerald-50 border border-emerald-100 mb-10">
-          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" aria-hidden="true" />
-          <span className="text-xs font-mono text-emerald-700 tracking-wide">
-            Open to senior opportunities
-          </span>
-        </div>
+        {/* Greeting — sits close to the name so they read as one natural intro */}
+        <p className="text-stone-400 text-lg font-light mb-2">Hi, I'm</p>
 
-        {/* Name — large, grounded, no gradient gimmicks */}
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-stone-900 tracking-tight leading-[1.06] mb-5">
           {INTRO.name}
         </h1>
@@ -519,17 +513,17 @@ function ProjectsSection() {
 
 function Footer() {
   return (
-    <footer id="contact" className="bg-stone-900 py-14">
+    <footer id="contact" className="bg-white border-t border-stone-100 py-14">
       <div className="max-w-6xl mx-auto px-6">
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
-          {/* Brand */}
+          {/* Brand + tagline */}
           <div>
-            <span className="font-mono text-sm font-semibold text-white">
-              AJ<span className="text-indigo-400">.</span>
+            <span className="font-mono text-sm font-semibold text-stone-900">
+              AJ<span className="text-indigo-600">.</span>
             </span>
-            <p className="text-stone-400 text-sm mt-1.5 max-w-xs">
-              Open to senior data engineering & architecture opportunities.
+            <p className="text-stone-500 text-sm mt-1.5 max-w-xs leading-relaxed">
+              Let's connect and build something great.
             </p>
           </div>
 
@@ -539,14 +533,14 @@ function Footer() {
               href={LINKS.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-stone-700 text-stone-400 hover:border-indigo-500/60 hover:text-indigo-400 text-sm transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-stone-200 text-stone-500 hover:border-indigo-300 hover:text-indigo-600 text-sm transition-all duration-200"
             >
               <Linkedin size={15} aria-hidden="true" />
               LinkedIn
             </a>
             <a
               href={`mailto:${LINKS.email}`}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-stone-700 text-stone-400 hover:border-indigo-500/60 hover:text-indigo-400 text-sm transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-stone-200 text-stone-500 hover:border-indigo-300 hover:text-indigo-600 text-sm transition-all duration-200"
             >
               <Mail size={15} aria-hidden="true" />
               Email
@@ -556,7 +550,7 @@ function Footer() {
               href={LINKS.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-600/15 border border-indigo-500/30 text-indigo-400 text-sm font-medium hover:bg-indigo-600/25 hover:border-indigo-500/50 transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 text-sm font-medium hover:bg-indigo-100 hover:border-indigo-300 transition-all duration-200"
             >
               <Download size={15} aria-hidden="true" />
               Resume
@@ -564,8 +558,8 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-stone-800 pt-6">
-          <p className="text-stone-600 text-xs font-mono">
+        <div className="border-t border-stone-100 pt-6">
+          <p className="text-stone-400 text-xs font-mono">
             © {new Date().getFullYear()} Alfred Johnson. All rights reserved.
           </p>
         </div>
