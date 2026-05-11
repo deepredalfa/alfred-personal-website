@@ -35,15 +35,14 @@ const LINKS = {
 
 const NAV_ITEMS = ['About', 'Stack', 'Projects', 'Contact']
 
-// Words that cycle through the split-flap board in the hero
+// Words that cycle through the word-flip board in the hero
 const FLAP_WORDS = [
-  'Azure Databricks',
+  'Databricks',
   'Apache Spark',
   'Delta Lake',
-  'Unity Catalog',
-  'Python',
-  'PySpark',
-  'Dimension Modelling',
+  'Kafka',
+  'Apache Flink',
+  'Dimensional Modeling',
   'Medallion Architecture',
 ]
 
@@ -197,76 +196,45 @@ function useScrollReveal(threshold = 0.08) {
   return [ref, visible]
 }
 
-// ─── SPLIT-FLAP BOARD ─────────────────────────────────────────────────────────
-// Directly manipulates the DOM via refs for animation performance.
-// Fixed board width = length of the longest word so layout never shifts.
+// ─── WORD-FLIP BOARD ──────────────────────────────────────────────────────────
+// Flips the entire word as a single unit using a 3D rotateX CSS animation.
+// Fixed card width is set by the longest phrase so the layout never shifts.
 
-function SplitFlapBoard({ words }) {
-  const containerRef = useRef(null)
+function WordFlipBoard({ words }) {
+  const [idx, setIdx]     = useState(0)
+  const [phase, setPhase] = useState('idle') // 'idle' | 'out' | 'in'
+  const nextIdxRef        = useRef(1)
 
   useEffect(() => {
-    const container = containerRef.current
-    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '
-    const maxLen = Math.max(...words.map(w => w.toUpperCase().length))
-    const activeIntervals = []
+    if (phase !== 'idle') return
+    const t = setTimeout(() => {
+      nextIdxRef.current = (idx + 1) % words.length
+      setPhase('out')
+    }, 3500)
+    return () => clearTimeout(t)
+  }, [idx, phase, words])
 
-    // Build the fixed-width grid of flap elements
-    container.innerHTML = ''
-    for (let i = 0; i < maxLen; i++) {
-      const flap = document.createElement('span')
-      flap.className = 'sf-flap'
-      flap.setAttribute('aria-hidden', 'true')
-      flap.textContent = ' '
-      container.appendChild(flap)
+  function handleAnimationEnd() {
+    if (phase === 'out') {
+      setIdx(nextIdxRef.current)
+      setPhase('in')
+    } else if (phase === 'in') {
+      setPhase('idle')
     }
+  }
 
-    function transitionTo(word) {
-      const flaps = container.querySelectorAll('.sf-flap')
-      const padded = word.toUpperCase().padEnd(maxLen, ' ')
-
-      flaps.forEach((flap, idx) => {
-        const target = padded[idx]
-        if (flap.textContent === target) return   // skip unchanged flaps
-
-        let count = 0
-        // Stagger: left columns land first, right columns keep spinning longer
-        const totalCycles = 4 + idx * 2
-
-        flap.classList.add('sf-spinning')
-
-        const iv = setInterval(() => {
-          flap.textContent = CHARS[Math.floor(Math.random() * CHARS.length)]
-          if (++count >= totalCycles) {
-            clearInterval(iv)
-            flap.textContent = target
-            flap.classList.remove('sf-spinning')
-          }
-        }, 55)
-
-        activeIntervals.push(iv)
-      })
-    }
-
-    let wordIdx = 0
-    const cycle = () => {
-      transitionTo(words[wordIdx])
-      wordIdx = (wordIdx + 1) % words.length
-    }
-
-    cycle()
-    const loopIv = setInterval(cycle, 4000)
-    activeIntervals.push(loopIv)
-
-    return () => activeIntervals.forEach(clearInterval)
-  }, [])
+  const cardClass = [
+    'wf-card',
+    phase === 'out' && 'wf-out',
+    phase === 'in'  && 'wf-in',
+  ].filter(Boolean).join(' ')
 
   return (
-    <div
-      ref={containerRef}
-      className="sf-board"
-      role="status"
-      aria-label="Technology currently featured"
-    />
+    <div className="wf-wrapper" role="status" aria-live="polite" aria-atomic="true">
+      <div className={cardClass} onAnimationEnd={handleAnimationEnd}>
+        {words[idx]}
+      </div>
+    </div>
   )
 }
 
@@ -422,14 +390,13 @@ function IntroSection() {
           {INTRO.name}
         </h1>
 
-        {/* Impact sentence + split-flap board */}
-        <div className="mb-12">
-          <p className="text-stone-800 text-lg md:text-xl font-medium leading-8 mb-5">
-            I build high-scale data pipelines and ecosystems with
-          </p>
-          {/* overflow-x:auto is a safety net on very small screens */}
-          <div className="overflow-x-auto pb-1">
-            <SplitFlapBoard words={FLAP_WORDS} />
+        {/* Impact sentence + word-flip board — strictly inline, one line */}
+        <div className="mb-12 overflow-x-auto pb-1">
+          <div className="flex flex-nowrap items-center gap-3">
+            <span className="text-stone-800 text-lg md:text-xl font-medium whitespace-nowrap shrink-0">
+              I build high-scale data pipelines and ecosystems with
+            </span>
+            <WordFlipBoard words={FLAP_WORDS} />
           </div>
         </div>
 
