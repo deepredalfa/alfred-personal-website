@@ -40,10 +40,11 @@ const FLAP_WORDS = [
   'Databricks',
   'Apache Spark',
   'Delta Lake',
-  'Kafka',
-  'Apache Flink',
+  'Python',
+  'PySpark',
   'Dimensional Modeling',
-  'Medallion Architecture',
+  'Unity Catalog',
+  'SQL'
 ]
 
 // UPDATE: Personal intro copy
