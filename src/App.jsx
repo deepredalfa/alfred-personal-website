@@ -267,7 +267,7 @@ function Navbar() {
             <li key={item}>
               <a
                 href={`#${item.toLowerCase()}`}
-                className="text-sm text-stone-500 hover:text-stone-900 transition-colors font-medium"
+                className="text-sm text-stone-800 hover:text-stone-950 transition-colors font-medium"
               >
                 {item}
               </a>
@@ -285,7 +285,7 @@ function Navbar() {
 
         {/* Mobile toggle */}
         <button
-          className="md:hidden p-2 -mr-2 text-stone-500 hover:text-stone-900 transition-colors"
+          className="md:hidden p-2 -mr-2 text-stone-700 hover:text-stone-950 transition-colors"
           onClick={() => setDrawerOpen(!drawerOpen)}
           aria-label="Toggle menu"
           aria-expanded={drawerOpen}
@@ -331,21 +331,21 @@ function IntroSection() {
       <div className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 w-full">
 
         {/* Greeting — sits close to the name so they read as one natural intro */}
-        <p className="text-stone-400 text-lg font-light mb-2">Hi, I'm</p>
+        <p className="text-stone-600 text-lg font-light mb-2">Hi, I'm</p>
 
         <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-stone-900 tracking-tight leading-[1.06] mb-5">
           {INTRO.name}
         </h1>
 
         {/* Title */}
-        <p className="text-xl md:text-2xl text-stone-500 font-light mb-10">
+        <p className="text-xl md:text-2xl text-stone-700 font-light mb-10">
           {INTRO.title}
         </p>
 
         {/* Bio — two short paragraphs, warm and direct */}
         <div className="max-w-xl space-y-4 mb-12">
-          <p className="text-stone-600 text-lg leading-relaxed">{INTRO.bio1}</p>
-          <p className="text-stone-500 text-base leading-relaxed">{INTRO.bio2}</p>
+          <p className="text-stone-800 text-lg leading-8 text-justify hyphens-auto">{INTRO.bio1}</p>
+          <p className="text-stone-700 text-base leading-7 tracking-wide">{INTRO.bio2}</p>
         </div>
 
         {/* CTAs */}
@@ -384,15 +384,6 @@ function TechStackSection() {
     <section id="stack" className="py-24 bg-white/10 backdrop-blur-lg">
       <div className="max-w-6xl mx-auto px-6">
 
-        {/* Section header */}
-        <div className="mb-14">
-          <span className="text-xs font-mono text-indigo-500 tracking-widest uppercase">Technical Arsenal</span>
-          <h2 className="text-4xl font-bold text-stone-900 mt-2 mb-3">The Stack</h2>
-          <p className="text-stone-400 max-w-lg text-sm">
-            14 years of depth across the modern data landscape — from legacy ESB integration to cloud-native Lakehouse design.
-          </p>
-        </div>
-
         {/*
           Inline row layout:
           [colored dot] [CATEGORY LABEL]    skill · skill · skill
@@ -418,13 +409,13 @@ function TechStackSection() {
                   className={`w-1.5 h-1.5 rounded-full mt-[5px] shrink-0 ${DOT_COLOR[cat.accent]}`}
                   aria-hidden="true"
                 />
-                <span className="text-[10px] font-mono text-stone-400 uppercase tracking-widest leading-snug group-hover:text-stone-600 transition-colors">
+                <span className="text-[10px] font-mono text-stone-600 uppercase tracking-widest leading-snug group-hover:text-stone-900 transition-colors">
                   {cat.label}
                 </span>
               </div>
 
               {/* Skills as inline text — no boxes, separated by · */}
-              <p className="text-sm text-stone-600 leading-relaxed flex-1">
+              <p className="text-sm text-stone-800 leading-7 flex-1">
                 {cat.skills.join('  ·  ')}
               </p>
             </div>
@@ -451,9 +442,9 @@ function ProjectCard({ project }) {
       <div className="p-6 md:p-8 border-b border-white/20">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
-            <span className="text-xs font-mono text-stone-400 mb-1.5 block">{project.year}</span>
+            <span className="text-xs font-mono text-stone-600 mb-1.5 block">{project.year}</span>
             <h3 className="text-xl font-bold text-stone-900 leading-snug">{project.title}</h3>
-            <p className="text-sm text-stone-500 mt-1.5 max-w-lg">{project.subtitle}</p>
+            <p className="text-sm text-stone-700 mt-1.5 max-w-lg leading-6 text-justify hyphens-auto">{project.subtitle}</p>
           </div>
           <a
             href={project.github}
@@ -492,7 +483,7 @@ function ProjectCard({ project }) {
             className={`flex-1 px-4 py-3.5 text-sm font-medium transition-all duration-200 border-b-2 ${
               activeTab === tab
                 ? 'border-indigo-500 text-indigo-600 bg-indigo-50/60'
-                : 'border-transparent text-stone-500 hover:text-stone-800 hover:bg-white/15'
+                : 'border-transparent text-stone-700 hover:text-stone-950 hover:bg-white/15'
             }`}
           >
             {PROJECT_TAB_LABELS[tab]}
@@ -502,7 +493,7 @@ function ProjectCard({ project }) {
 
       {/* Tab content */}
       <div id={`${project.id}-${activeTab}`} role="tabpanel" className="p-6 md:p-8">
-        <p className="text-stone-600 text-sm leading-relaxed">{project.tabs[activeTab]}</p>
+        <p className="text-stone-800 text-sm leading-7 text-justify hyphens-auto">{project.tabs[activeTab]}</p>
       </div>
     </article>
   )
@@ -516,11 +507,7 @@ function ProjectsSection() {
       <div ref={ref} className="max-w-6xl mx-auto px-6">
 
         <div className={`mb-14 ${visible ? 'animate-fade-up' : 'opacity-0'}`}>
-          <span className="text-xs font-mono text-indigo-500 tracking-widest uppercase">Proof of Work</span>
-          <h2 className="text-4xl font-bold text-stone-900 mt-2 mb-3">My Projects</h2>
-          <p className="text-stone-400 max-w-lg text-sm">
-            Real-world data systems built at scale — from design decisions to production delivery.
-          </p>
+          <span className="text-xs font-mono text-indigo-700 tracking-widest uppercase">Interesting Works</span>
         </div>
 
         <div
@@ -548,7 +535,7 @@ function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
           {/* Tagline */}
           <div>
-            <p className="text-stone-500 text-sm max-w-xs leading-relaxed">
+            <p className="text-stone-700 text-sm max-w-xs leading-7 tracking-wide">
               Let's connect and build something great.
             </p>
           </div>
@@ -585,7 +572,7 @@ function Footer() {
         </div>
 
         <div className="border-t border-white/20 pt-6">
-          <p className="text-stone-400 text-xs font-mono">
+          <p className="text-stone-600 text-xs font-mono">
             © {new Date().getFullYear()} Alfred Johnson. All rights reserved.
           </p>
         </div>
