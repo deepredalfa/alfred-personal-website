@@ -185,6 +185,23 @@ function useScrollReveal(threshold = 0.08) {
   return [ref, visible]
 }
 
+// ─── GLOBAL BACKGROUND ────────────────────────────────────────────────────────
+// position:fixed so the blobs drift behind every section as the user scrolls.
+
+function GlobalBackground() {
+  return (
+    <div aria-hidden="true" className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 bg-stone-50" />
+      {/* Indigo dot grid — faint technical texture across the whole site */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,#6366f10e_1px,transparent_1px)] bg-[size:28px_28px]" />
+      {/* Three slow ambient blobs — different speeds so they never sync */}
+      <div className="absolute -top-40 -left-20   w-[600px] h-[600px] rounded-full bg-indigo-200/30 blur-3xl animate-blob-1" />
+      <div className="absolute top-[55%] -right-32 w-[520px] h-[520px] rounded-full bg-violet-200/20 blur-3xl animate-blob-2" />
+      <div className="absolute -bottom-32 left-1/4 w-[460px] h-[460px] rounded-full bg-sky-200/20   blur-3xl animate-blob-3" />
+    </div>
+  )
+}
+
 // ─── NAVBAR ───────────────────────────────────────────────────────────────────
 
 function Navbar() {
@@ -206,14 +223,6 @@ function Navbar() {
       }`}
     >
       <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        {/* Logo */}
-        <a
-          href="#"
-          className="font-mono text-sm font-semibold text-stone-900 hover:text-indigo-600 transition-colors"
-          aria-label="Home"
-        >
-          AJ<span className="text-indigo-600">.</span>
-        </a>
 
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-8" role="list">
@@ -280,24 +289,7 @@ function Navbar() {
 
 function IntroSection() {
   return (
-    <section id="about" className="relative min-h-screen flex items-center bg-stone-50 overflow-hidden">
-
-      {/*
-        Animated gradient blobs — slow-drifting, heavily blurred shapes.
-        Colors are very light (indigo-200, violet-200, sky-200) at low opacity
-        so the effect is ambient warmth, not decoration.
-      */}
-      <div aria-hidden="true" className="absolute inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-32 -left-24  w-[560px] h-[560px] rounded-full bg-indigo-200/40 blur-3xl animate-blob-1" />
-        <div className="absolute top-1/2  -right-32 w-[480px] h-[480px] rounded-full bg-violet-200/30 blur-3xl animate-blob-2" />
-        <div className="absolute -bottom-24 left-1/3 w-[420px] h-[420px] rounded-full bg-sky-200/25   blur-3xl animate-blob-3" />
-      </div>
-
-      {/* Subtle dot grid — adds quiet technical texture without sci-fi feel */}
-      <div
-        aria-hidden="true"
-        className="absolute inset-0 bg-[radial-gradient(circle,#00000009_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none"
-      />
+    <section id="about" className="relative min-h-screen flex items-center overflow-hidden bg-transparent">
 
       <div className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 w-full">
 
@@ -323,7 +315,7 @@ function IntroSection() {
         <div className="flex flex-wrap gap-4">
           <a
             href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-lg hover:shadow-indigo-600/20 active:translate-y-0"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-white text-indigo-700 font-semibold text-sm shadow-sm hover:from-indigo-100 hover:to-indigo-50 hover:border-indigo-300 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             {INTRO.cta1}
             <ArrowUpRight size={16} aria-hidden="true" />
@@ -332,7 +324,7 @@ function IntroSection() {
             href={LINKS.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-stone-200 text-stone-600 font-semibold text-sm hover:border-indigo-300 hover:text-indigo-600 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white text-violet-700 font-semibold text-sm shadow-sm hover:from-violet-100 hover:to-violet-50 hover:border-violet-300 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             {INTRO.cta2}
             <Linkedin size={16} aria-hidden="true" />
@@ -352,7 +344,7 @@ function TechStackSection() {
   const [ref, visible] = useScrollReveal()
 
   return (
-    <section id="stack" className="py-24 bg-white">
+    <section id="stack" className="py-24 bg-white/85 backdrop-blur-sm">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Section header */}
@@ -483,7 +475,7 @@ function ProjectsSection() {
   const [ref, visible] = useScrollReveal()
 
   return (
-    <section id="projects" className="py-24 bg-stone-50">
+    <section id="projects" className="py-24 bg-stone-50/80 backdrop-blur-sm">
       <div ref={ref} className="max-w-6xl mx-auto px-6">
 
         <div className={`mb-14 ${visible ? 'animate-fade-up' : 'opacity-0'}`}>
@@ -513,16 +505,13 @@ function ProjectsSection() {
 
 function Footer() {
   return (
-    <footer id="contact" className="bg-white border-t border-stone-100 py-14">
+    <footer id="contact" className="bg-white/90 backdrop-blur-sm border-t border-stone-100 py-14">
       <div className="max-w-6xl mx-auto px-6">
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
-          {/* Brand + tagline */}
+          {/* Tagline */}
           <div>
-            <span className="font-mono text-sm font-semibold text-stone-900">
-              AJ<span className="text-indigo-600">.</span>
-            </span>
-            <p className="text-stone-500 text-sm mt-1.5 max-w-xs leading-relaxed">
+            <p className="text-stone-500 text-sm max-w-xs leading-relaxed">
               Let's connect and build something great.
             </p>
           </div>
@@ -573,7 +562,8 @@ function Footer() {
 
 export default function App() {
   return (
-    <div className="min-h-screen bg-stone-50">
+    <div className="min-h-screen">
+      <GlobalBackground />
       <Navbar />
       <main>
         <IntroSection />
