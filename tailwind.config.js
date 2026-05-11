@@ -18,8 +18,8 @@ export default {
         },
       },
       animation: {
-        // ease-out-expo curve: deliberate start, soft landing — not a snap
-        brew: 'brew 1.1s cubic-bezier(0.16, 1, 0.3, 1) forwards',
+        // "both" fill: hides phrase during its delay AND holds opacity-1 after settling
+        brew: 'brew 1.1s cubic-bezier(0.16, 1, 0.3, 1) both',
       },
     },
   },

@@ -166,19 +166,17 @@ const PROJECTS = [
   },
 ]
 
-// UPDATE: Edit phrase text here to update the personal introduction copy.
-// delay   — seconds after the section enters the viewport before this phrase appears
-// indent  — visually indents the core-value lines, like a typographic list
-// gap     — adds breathing room *after* this phrase (paragraph break between sentences)
-const INTRO_PHRASES = [
-  { text: 'A senior data architect',             delay: 0,    indent: false, gap: false },
-  { text: 'built on simple principles:',         delay: 0.65, indent: false, gap: false },
-  { text: 'strong black coffee,',               delay: 1.35, indent: true,  gap: false },
-  { text: 'humanity over dogma,',               delay: 2.05, indent: true,  gap: false },
-  { text: 'and kindness in every connection.',  delay: 2.75, indent: true,  gap: true  },
-  { text: 'I believe the best systems',         delay: 3.85, indent: false, gap: false },
-  { text: 'are built by keeping things human.', delay: 4.55, indent: false, gap: false },
-]
+// UPDATE: Edit personal intro copy here
+const PERSONAL_INTRO = {
+  setup:  'A senior data architect built on simple principles:',
+  values: [
+    { text: 'strong black coffee,',              delay: 1.1 },
+    { text: 'humanity over dogma,',              delay: 1.9 },
+    { text: 'and kindness in every connection.', delay: 2.7 },
+  ],
+  belief: 'I believe the best systems are built by keeping things human.',
+  sig:    'Alfred Johnson',
+}
 
 // ─── ACCENT MAP ───────────────────────────────────────────────────────────────
 // Tailwind requires complete class strings — no dynamic template literals.
@@ -615,7 +613,6 @@ function PersonalSection() {
   const [brewing, setBrewing] = useState(false)
   const ref = useRef(null)
 
-  // Trigger once when the section scrolls into view — never replays
   useEffect(() => {
     const observer = new IntersectionObserver(
       ([entry]) => {
@@ -624,49 +621,93 @@ function PersonalSection() {
           observer.disconnect()
         }
       },
-      { threshold: 0.3 }
+      { threshold: 0.2 }
     )
     if (ref.current) observer.observe(ref.current)
     return () => observer.disconnect()
   }, [])
 
-  return (
-    <section id="about" className="py-24 bg-slate-950">
-      <div className="max-w-6xl mx-auto px-6">
+  // Generates animation class; "both" fill-mode keeps phrase hidden during its delay
+  const b = (extra = '') =>
+    `${brewing ? 'animate-brew' : 'opacity-0'} ${extra}`
 
-        {/* Section header — amber accent marks the shift from technical to human */}
-        <div className="mb-16">
+  return (
+    <section id="about" className="py-24 bg-slate-950 relative overflow-hidden">
+
+      {/* Warm ambient glow — softens the cold dark background behind the card */}
+      <div
+        aria-hidden="true"
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[500px] bg-amber-950/20 rounded-full blur-3xl pointer-events-none"
+      />
+
+      <div className="relative max-w-6xl mx-auto px-6">
+
+        <div className="mb-12">
           <span className="text-xs font-mono text-amber-500/70 tracking-widest uppercase">
             The Human Element
           </span>
           <h2 className="text-4xl font-bold text-slate-100 mt-2">Beyond the Terminal</h2>
         </div>
 
-        {/*
-          Brewing reveal — phrases drip in sequentially.
-          The left border acts as a typographic pull-quote marker (warm amber, low opacity).
-          The indent on core-value lines mimics a prose list without bullet points.
-        */}
-        <div
-          ref={ref}
-          className="max-w-2xl border-l border-amber-500/20 pl-8"
-          aria-label="Personal introduction"
-        >
-          {INTRO_PHRASES.map((phrase, i) => (
-            <span
-              key={i}
-              className={[
-                'block font-light text-stone-100 leading-[1.35] tracking-tight',
-                'text-3xl md:text-4xl',
-                phrase.indent ? 'pl-5'  : '',
-                phrase.gap    ? 'mb-7'  : '',
-                brewing ? 'animate-brew' : 'opacity-0',
-              ].join(' ')}
-              style={{ animationDelay: `${phrase.delay}s` }}
+        {/* Quote card */}
+        <div ref={ref} className="max-w-xl">
+          <div className="relative rounded-2xl border border-stone-800/70 bg-stone-900/30 px-8 pt-10 pb-10 md:px-12 md:pt-12 overflow-hidden">
+
+            {/* Top warm hairline — signals a different emotional register from the tech sections */}
+            <div
+              aria-hidden="true"
+              className="absolute top-0 inset-x-0 h-px bg-gradient-to-r from-transparent via-amber-400/40 to-transparent"
+            />
+
+            {/* Decorative open-quote glyph — positioned in the top-left corner, behind text */}
+            <div
+              aria-hidden="true"
+              className="absolute -top-3 left-5 text-[7rem] leading-none font-serif text-amber-400/[0.09] select-none pointer-events-none"
             >
-              {phrase.text}
-            </span>
-          ))}
+              ❝
+            </div>
+
+            {/* Setup line — muted, sets the stage */}
+            <p
+              className={b('relative text-stone-400 text-base md:text-lg leading-relaxed mb-5')}
+              style={{ animationDelay: '0s' }}
+            >
+              {PERSONAL_INTRO.setup}
+            </p>
+
+            {/* Core values — bolder, framed by amber left border */}
+            <div className="border-l-2 border-amber-500/40 pl-5 mb-6 space-y-2">
+              {PERSONAL_INTRO.values.map(({ text, delay }) => (
+                <p
+                  key={text}
+                  className={b('text-xl md:text-2xl font-semibold text-stone-100 leading-snug')}
+                  style={{ animationDelay: `${delay}s` }}
+                >
+                  {text}
+                </p>
+              ))}
+            </div>
+
+            {/* Closing belief — italic, warm, full width */}
+            <p
+              className={b('relative text-stone-300 text-base md:text-lg leading-relaxed italic mb-8')}
+              style={{ animationDelay: '3.7s' }}
+            >
+              {PERSONAL_INTRO.belief}
+            </p>
+
+            {/* Signature */}
+            <div
+              className={b('flex items-center gap-3')}
+              style={{ animationDelay: '4.9s' }}
+            >
+              <div className="h-px w-5 bg-amber-500/40" aria-hidden="true" />
+              <span className="text-amber-500/55 text-sm font-mono tracking-wide">
+                {PERSONAL_INTRO.sig}
+              </span>
+            </div>
+
+          </div>
         </div>
 
       </div>
