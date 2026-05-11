@@ -52,7 +52,7 @@ const FLAP_WORDS = [
 
 // UPDATE: Personal intro copy
 const INTRO = {
-  name:  'Alfred Johnson.',
+  name:  'Alfred Johnson',
   title: 'Senior Data Engineer & Architect',
   // UPDATE: Edit these two bio paragraphs
   bio1:  'Senior Data Engineer with 14 years across fintech, telco, and retail. Lakehouse architecture, Azure Databricks, Delta Lake, Apache Spark — and a strong foundation in API design, event-driven systems, and enterprise integration.',
