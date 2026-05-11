@@ -214,7 +214,7 @@ function WordFlipBoard({ words }) {
     const t = setTimeout(() => {
       nextIdxRef.current = (idx + 1) % words.length
       setPhase('out')
-    }, 3500)
+    }, 1500)
     return () => clearTimeout(t)
   }, [idx, phase, words])
 
@@ -396,7 +396,7 @@ function IntroSection() {
 
         {/* Impact sentence — board sits inline so the line wraps naturally on mobile */}
         <p className="text-stone-800 text-lg md:text-xl font-medium leading-loose mb-12">
-          I build high-scale data pipelines and ecosystems with{' '}
+          I build high-scale data pipelines and ecosystems using{' '}
           <WordFlipBoard words={FLAP_WORDS} />
         </p>
 
