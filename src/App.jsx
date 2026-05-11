@@ -19,7 +19,7 @@ import { useState, useEffect, useRef } from 'react'
 import {
   Terminal, Layers, Code2, Server, Cloud, Workflow,
   Activity, Shield, Network, Database, Users,
-  Github, Linkedin, Mail, Download,
+  Github, Linkedin, Mail, Download, FolderOpen,
   Menu, X, ArrowUpRight,
 } from 'lucide-react'
 
@@ -33,7 +33,12 @@ const LINKS = {
   resume:   'YOUR_RESUME_URL',   // UPDATE: Paste your hosted resume URL here
 }
 
-const NAV_ITEMS = ['About', 'Stack', 'Projects', 'Contact']
+const NAV_ITEMS = [
+  { label: 'About',     id: 'about'    },
+  { label: 'Skill Set', id: 'stack'    },
+  { label: 'Projects',  id: 'projects' },
+  { label: 'Contact',   id: 'contact'  },
+]
 
 // Words that cycle through the word-flip board in the hero
 const FLAP_WORDS = [
@@ -321,12 +326,12 @@ function Navbar() {
         {/* Desktop links */}
         <ul className="hidden md:flex items-center gap-8" role="list">
           {NAV_ITEMS.map((item) => (
-            <li key={item}>
+            <li key={item.id}>
               <a
-                href={`#${item.toLowerCase()}`}
+                href={`#${item.id}`}
                 className="text-sm text-stone-800 hover:text-stone-950 transition-colors font-medium"
               >
-                {item}
+                {item.label}
               </a>
             </li>
           ))}
@@ -357,12 +362,12 @@ function Navbar() {
           <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col gap-3">
             {NAV_ITEMS.map((item) => (
               <a
-                key={item}
-                href={`#${item.toLowerCase()}`}
+                key={item.id}
+                href={`#${item.id}`}
                 onClick={() => setDrawerOpen(false)}
                 className="text-sm font-medium text-stone-700 hover:text-indigo-600 transition-colors py-1"
               >
-                {item}
+                {item.label}
               </a>
             ))}
             <a
@@ -400,24 +405,44 @@ function IntroSection() {
           <WordFlipBoard words={FLAP_WORDS} />
         </p>
 
-        {/* CTAs */}
-        <div className="flex flex-wrap gap-4">
+        {/* CTAs — icon-only on mobile (28px), icon + label on desktop */}
+        <div className="flex flex-nowrap gap-3">
+
+          {/* Projects */}
           <a
             href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-indigo-400/50 bg-indigo-500/15 backdrop-blur-sm text-indigo-900 font-semibold text-sm hover:bg-indigo-500/25 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            aria-label="My Projects"
+            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-indigo-400/50 bg-indigo-500/15 backdrop-blur-sm text-indigo-900 font-semibold text-sm hover:bg-indigo-500/25 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
-            {INTRO.cta1}
-            <ArrowUpRight size={16} aria-hidden="true" />
+            <FolderOpen size={28} className="md:hidden" aria-hidden="true" />
+            <FolderOpen size={16} className="hidden md:block shrink-0" aria-hidden="true" />
+            <span className="hidden md:inline">{INTRO.cta1}</span>
           </a>
+
+          {/* LinkedIn */}
           <a
             href={LINKS.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-violet-400/50 bg-violet-500/15 backdrop-blur-sm text-violet-900 font-semibold text-sm hover:bg-violet-500/25 hover:border-violet-500/60 hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            aria-label="Connect on LinkedIn"
+            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-violet-400/50 bg-violet-500/15 backdrop-blur-sm text-violet-900 font-semibold text-sm hover:bg-violet-500/25 hover:border-violet-500/60 hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
-            {INTRO.cta2}
-            <Linkedin size={16} aria-hidden="true" />
+            <Linkedin size={28} className="md:hidden" aria-hidden="true" />
+            <Linkedin size={16} className="hidden md:block shrink-0" aria-hidden="true" />
+            <span className="hidden md:inline">{INTRO.cta2}</span>
           </a>
+
+          {/* Skill Set */}
+          <a
+            href="#stack"
+            aria-label="Skill Set"
+            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-teal-400/50 bg-teal-500/15 backdrop-blur-sm text-teal-900 font-semibold text-sm hover:bg-teal-500/25 hover:border-teal-500/60 hover:shadow-lg hover:shadow-teal-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+          >
+            <Layers size={28} className="md:hidden" aria-hidden="true" />
+            <Layers size={16} className="hidden md:block shrink-0" aria-hidden="true" />
+            <span className="hidden md:inline">Skill Set</span>
+          </a>
+
         </div>
 
       </div>
