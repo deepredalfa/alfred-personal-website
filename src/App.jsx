@@ -390,15 +390,11 @@ function IntroSection() {
           {INTRO.name}
         </h1>
 
-        {/* Impact sentence + word-flip board — strictly inline, one line */}
-        <div className="mb-12 overflow-x-auto pb-1">
-          <div className="flex flex-nowrap items-center gap-3">
-            <span className="text-stone-800 text-lg md:text-xl font-medium whitespace-nowrap shrink-0">
-              I build high-scale data pipelines and ecosystems with
-            </span>
-            <WordFlipBoard words={FLAP_WORDS} />
-          </div>
-        </div>
+        {/* Impact sentence — board sits inline so the line wraps naturally on mobile */}
+        <p className="text-stone-800 text-lg md:text-xl font-medium leading-loose mb-12">
+          I build high-scale data pipelines and ecosystems with{' '}
+          <WordFlipBoard words={FLAP_WORDS} />
+        </p>
 
         {/* CTAs */}
         <div className="flex flex-wrap gap-4">
