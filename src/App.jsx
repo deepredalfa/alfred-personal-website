@@ -195,24 +195,46 @@ function GlobalBackground() {
       <div className="absolute inset-0 bg-stone-50" />
 
       {/*
-        Aurora blobs — very large, heavily blurred, slow drift.
-        Four blobs at different corners/positions overlap and blend,
-        creating a soft colour-wash effect that matches the indigo/violet/sky/emerald palette.
-        All opacity kept low so text sections stay crisp even where section backgrounds are semi-transparent.
+        Aurora blobs — radial gradients so colour is vivid at the core and dissolves
+        to transparent at the edges. blur-[80-100px] spreads without washing out the hue.
+        Five blobs, four animation tracks, all desynchronised so they never align.
       */}
-      {/* Indigo wash — top-left anchor */}
-      <div className="absolute -top-64 -left-48 w-[900px] h-[800px] rounded-full bg-indigo-300/20 blur-[120px] animate-aurora-1" />
-      {/* Sky wash — top-right anchor */}
-      <div className="absolute -top-32 -right-48 w-[800px] h-[700px] rounded-full bg-sky-300/15 blur-[110px] animate-aurora-2" />
-      {/* Violet wash — centre drift */}
-      <div className="absolute top-[40%] left-[20%] w-[700px] h-[700px] rounded-full bg-violet-300/15 blur-[130px] animate-aurora-3" />
-      {/* Emerald wash — bottom accent */}
-      <div className="absolute bottom-0 right-[15%] w-[750px] h-[600px] rounded-full bg-emerald-200/12 blur-[120px] animate-aurora-4" />
-      {/* Blue accent — bottom-left fill */}
-      <div className="absolute -bottom-32 -left-24 w-[600px] h-[600px] rounded-full bg-blue-200/15 blur-[100px] animate-aurora-2" style={{ animationDelay: '-10s' }} />
 
-      {/* Subtle dot grid on top — faint technical texture */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,#6366f108_1px,transparent_1px)] bg-[size:28px_28px]" />
+      {/* Indigo → violet — top-left anchor, 22 s */}
+      <div
+        className="absolute -top-64 -left-48 w-[900px] h-[800px] rounded-full blur-[90px] animate-aurora-1"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.55) 0%, rgba(139,92,246,0.30) 45%, transparent 72%)' }}
+      />
+
+      {/* Sky → cyan — top-right, 28 s */}
+      <div
+        className="absolute -top-32 -right-48 w-[800px] h-[700px] rounded-full blur-[80px] animate-aurora-2"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(56,189,248,0.50) 0%, rgba(34,211,238,0.28) 45%, transparent 72%)' }}
+      />
+
+      {/* Violet → fuchsia — centre drift, 18 s */}
+      <div
+        className="absolute top-[40%] left-[20%] w-[750px] h-[750px] rounded-full blur-[100px] animate-aurora-3"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(167,139,250,0.50) 0%, rgba(217,70,239,0.22) 45%, transparent 72%)' }}
+      />
+
+      {/* Emerald → teal — bottom-right, 25 s */}
+      <div
+        className="absolute bottom-0 right-[10%] w-[800px] h-[650px] rounded-full blur-[90px] animate-aurora-4"
+        style={{ background: 'radial-gradient(ellipse at center, rgba(52,211,153,0.45) 0%, rgba(45,212,191,0.25) 45%, transparent 72%)' }}
+      />
+
+      {/* Blue → indigo — bottom-left, offset on aurora-2 track */}
+      <div
+        className="absolute -bottom-32 -left-24 w-[650px] h-[650px] rounded-full blur-[85px] animate-aurora-2"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(96,165,250,0.48) 0%, rgba(99,102,241,0.25) 45%, transparent 72%)',
+          animationDelay: '-12s',
+        }}
+      />
+
+      {/* Subtle dot grid — faint technical texture sits on top of the colour wash */}
+      <div className="absolute inset-0 bg-[radial-gradient(circle,#6366f112_1px,transparent_1px)] bg-[size:28px_28px]" />
     </div>
   )
 }
