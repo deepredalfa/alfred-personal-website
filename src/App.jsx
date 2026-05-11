@@ -44,7 +44,10 @@ const FLAP_WORDS = [
   'PySpark',
   'Dimensional Modeling',
   'Unity Catalog',
-  'SQL'
+  'SQL',
+  'Azure Data Lake Storage',
+  'Parquet',
+  'Azure DevOps'
 ]
 
 // UPDATE: Personal intro copy
