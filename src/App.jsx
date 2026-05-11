@@ -630,7 +630,7 @@ function Footer() {
 
         <div className="border-t border-white/20 pt-6">
           <p className="text-stone-600 text-xs font-mono">
-            © {new Date().getFullYear()} Alfred Johnson. All rights reserved.
+            © {new Date().getFullYear()} Alfred Johnson. Ctrl+C is highly encouraged ;)
           </p>
         </div>
 
