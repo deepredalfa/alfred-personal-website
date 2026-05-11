@@ -203,32 +203,32 @@ function GlobalBackground() {
       {/* Indigo → violet — top-left anchor, 22 s */}
       <div
         className="absolute -top-64 -left-48 w-[900px] h-[800px] rounded-full blur-[90px] animate-aurora-1"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.55) 0%, rgba(139,92,246,0.30) 45%, transparent 72%)' }}
+        style={{ background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.28) 0%, rgba(139,92,246,0.14) 45%, transparent 72%)' }}
       />
 
       {/* Sky → cyan — top-right, 28 s */}
       <div
         className="absolute -top-32 -right-48 w-[800px] h-[700px] rounded-full blur-[80px] animate-aurora-2"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(56,189,248,0.50) 0%, rgba(34,211,238,0.28) 45%, transparent 72%)' }}
+        style={{ background: 'radial-gradient(ellipse at center, rgba(56,189,248,0.25) 0%, rgba(34,211,238,0.13) 45%, transparent 72%)' }}
       />
 
       {/* Violet → fuchsia — centre drift, 18 s */}
       <div
         className="absolute top-[40%] left-[20%] w-[750px] h-[750px] rounded-full blur-[100px] animate-aurora-3"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(167,139,250,0.50) 0%, rgba(217,70,239,0.22) 45%, transparent 72%)' }}
+        style={{ background: 'radial-gradient(ellipse at center, rgba(167,139,250,0.25) 0%, rgba(217,70,239,0.11) 45%, transparent 72%)' }}
       />
 
       {/* Emerald → teal — bottom-right, 25 s */}
       <div
         className="absolute bottom-0 right-[10%] w-[800px] h-[650px] rounded-full blur-[90px] animate-aurora-4"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(52,211,153,0.45) 0%, rgba(45,212,191,0.25) 45%, transparent 72%)' }}
+        style={{ background: 'radial-gradient(ellipse at center, rgba(52,211,153,0.22) 0%, rgba(45,212,191,0.12) 45%, transparent 72%)' }}
       />
 
       {/* Blue → indigo — bottom-left, offset on aurora-2 track */}
       <div
         className="absolute -bottom-32 -left-24 w-[650px] h-[650px] rounded-full blur-[85px] animate-aurora-2"
         style={{
-          background: 'radial-gradient(ellipse at center, rgba(96,165,250,0.48) 0%, rgba(99,102,241,0.25) 45%, transparent 72%)',
+          background: 'radial-gradient(ellipse at center, rgba(96,165,250,0.24) 0%, rgba(99,102,241,0.12) 45%, transparent 72%)',
           animationDelay: '-12s',
         }}
       />
@@ -383,6 +383,11 @@ function TechStackSection() {
   return (
     <section id="stack" className="py-24 bg-white/10 backdrop-blur-lg">
       <div className="max-w-6xl mx-auto px-6">
+
+        {/* Section header */}
+        <div className="mb-10">
+          <span className="text-xs font-mono text-indigo-700 tracking-widest uppercase">Skill Set</span>
+        </div>
 
         {/*
           Inline row layout:
