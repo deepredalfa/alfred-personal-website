@@ -62,7 +62,7 @@ const INTRO = {
   // UPDATE: Edit these two bio paragraphs
   bio1:  'Senior Data Engineer with 14 years across fintech, telco, and retail. Lakehouse architecture, Azure Databricks, Delta Lake, Apache Spark — and a strong foundation in API design, event-driven systems, and enterprise integration.',
   bio2:  'Strong coffee. Simple principles.',
-  cta1:  'My Projects',
+  cta1:  'Interesting Works',
   cta2:  'Connect on LinkedIn',
 }
 
