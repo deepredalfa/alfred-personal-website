@@ -34,27 +34,24 @@
 
 /* ─── WORD-FLIP BOARD ──────────────────────────────────────────────────────── */
 
-/* Perspective wrapper — sits inline with surrounding text; wraps naturally on mobile */
+/* Perspective wrapper — baseline-aligned so the word sits flush with surrounding text */
 .wf-wrapper {
   display: inline-block;
   perspective: 500px;
-  vertical-align: middle;
   user-select: none;
   -webkit-user-select: none;
 }
 
 .wf-card {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
+  display: inline-block;
+  vertical-align: baseline;
 
-  /* Fixed width locked to "Medallion Architecture" (22 chars — exact in monospace) */
-  min-width: 22ch;
-
-  font-family: 'JetBrains Mono', 'Fira Code', monospace;
-  font-size: clamp(1.3rem, 4vw, 1.75rem);
-  font-weight: 700;
-  color: #0f172a;
+  /* Inherit everything from the parent <p> so size is identical to prefix text */
+  font-size: inherit;
+  font-family: inherit;
+  line-height: inherit;
+  font-weight: 800;
+  color: #2563eb;
   white-space: nowrap;
 
   transform-origin: center center;
