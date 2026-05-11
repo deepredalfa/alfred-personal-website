@@ -18,7 +18,7 @@
   }
 
   ::selection {
-    @apply bg-indigo-100 text-indigo-900;
+    @apply bg-violet-300/70 text-violet-950;
   }
 }
 

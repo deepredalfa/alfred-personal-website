@@ -255,7 +255,7 @@ function Navbar() {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/90 backdrop-blur-md shadow-sm border-b border-stone-100'
+          ? 'bg-white/10 backdrop-blur-xl border-b border-white/20'
           : 'bg-transparent'
       }`}
     >
@@ -278,7 +278,7 @@ function Navbar() {
         {/* Hire Me */}
         <a
           href={`mailto:${LINKS.email}`}
-          className="hidden md:inline-flex text-sm px-4 py-2 rounded-lg border border-stone-200 text-stone-600 font-medium hover:border-indigo-300 hover:text-indigo-600 transition-all duration-200"
+          className="hidden md:inline-flex text-sm px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-stone-800 font-medium hover:border-indigo-400/60 hover:text-indigo-700 transition-all duration-200"
         >
           Hire Me
         </a>
@@ -296,7 +296,7 @@ function Navbar() {
 
       {/* Mobile drawer */}
       {drawerOpen && (
-        <div className="md:hidden bg-white border-b border-stone-100 shadow-sm">
+        <div className="md:hidden bg-white/10 backdrop-blur-xl border-b border-white/20">
           <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col gap-3">
             {NAV_ITEMS.map((item) => (
               <a
@@ -310,7 +310,7 @@ function Navbar() {
             ))}
             <a
               href={`mailto:${LINKS.email}`}
-              className="text-sm px-4 py-2.5 rounded-lg border border-stone-200 text-stone-600 text-center hover:border-indigo-300 hover:text-indigo-600 transition-all"
+              className="text-sm px-4 py-2.5 rounded-lg border border-white/30 bg-white/10 text-stone-800 text-center hover:border-indigo-400/60 hover:text-indigo-700 transition-all"
             >
               Hire Me
             </a>
@@ -352,7 +352,7 @@ function IntroSection() {
         <div className="flex flex-wrap gap-4">
           <a
             href="#projects"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-indigo-200 bg-gradient-to-br from-indigo-50 to-white text-indigo-700 font-semibold text-sm shadow-sm hover:from-indigo-100 hover:to-indigo-50 hover:border-indigo-300 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-indigo-400/50 bg-indigo-500/15 backdrop-blur-sm text-indigo-900 font-semibold text-sm hover:bg-indigo-500/25 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             {INTRO.cta1}
             <ArrowUpRight size={16} aria-hidden="true" />
@@ -361,7 +361,7 @@ function IntroSection() {
             href={LINKS.linkedin}
             target="_blank"
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-violet-200 bg-gradient-to-br from-violet-50 to-white text-violet-700 font-semibold text-sm shadow-sm hover:from-violet-100 hover:to-violet-50 hover:border-violet-300 hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center gap-2 px-6 py-3.5 rounded-xl border border-violet-400/50 bg-violet-500/15 backdrop-blur-sm text-violet-900 font-semibold text-sm hover:bg-violet-500/25 hover:border-violet-500/60 hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             {INTRO.cta2}
             <Linkedin size={16} aria-hidden="true" />
@@ -381,7 +381,7 @@ function TechStackSection() {
   const [ref, visible] = useScrollReveal()
 
   return (
-    <section id="stack" className="py-24 bg-white/85 backdrop-blur-sm">
+    <section id="stack" className="py-24 bg-white/10 backdrop-blur-lg">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Section header */}
@@ -400,14 +400,14 @@ function TechStackSection() {
           Hover effect uses an inset box-shadow for the left accent line —
           avoids layout shift that a real border-left would cause.
         */}
-        <div ref={ref} className="divide-y divide-stone-100">
+        <div ref={ref} className="divide-y divide-white/25">
           {TECH_CATEGORIES.map((cat, i) => (
             <div
               key={cat.id}
               className={[
                 'group flex gap-6 md:gap-12 py-4 -mx-4 px-4 rounded-xl',
                 'transition-all duration-200',
-                'hover:bg-stone-50 hover:shadow-[inset_3px_0_0_#a5b4fc]',
+                'hover:bg-white/20 hover:shadow-[inset_3px_0_0_#a5b4fc]',
                 visible ? 'animate-fade-up' : 'opacity-0',
               ].join(' ')}
               style={{ animationDelay: `${i * 0.04}s` }}
@@ -442,13 +442,13 @@ function ProjectCard({ project }) {
   const [activeTab, setActiveTab] = useState('problem')
 
   return (
-    <article className="rounded-2xl border border-stone-200 bg-white overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-stone-200/80">
+    <article className="rounded-2xl border border-white/30 bg-white/15 backdrop-blur-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20">
 
       {/* Indigo top accent bar */}
       <div className="h-[3px] bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-500" aria-hidden="true" />
 
       {/* Card header */}
-      <div className="p-6 md:p-8 border-b border-stone-100">
+      <div className="p-6 md:p-8 border-b border-white/20">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
             <span className="text-xs font-mono text-stone-400 mb-1.5 block">{project.year}</span>
@@ -459,7 +459,7 @@ function ProjectCard({ project }) {
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="self-start shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-stone-200 text-stone-500 hover:border-indigo-300 hover:text-indigo-600 text-xs font-medium transition-all"
+            className="self-start shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/30 bg-white/10 text-stone-700 hover:border-indigo-400/60 hover:text-indigo-700 text-xs font-medium transition-all"
             aria-label={`View ${project.title} on GitHub`}
           >
             <Github size={13} aria-hidden="true" />
@@ -472,7 +472,7 @@ function ProjectCard({ project }) {
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="px-2.5 py-1 rounded-md bg-stone-50 text-stone-500 text-xs font-mono border border-stone-100"
+              className="px-2.5 py-1 rounded-md bg-white/15 text-stone-700 text-xs font-mono border border-white/25"
             >
               {tag}
             </span>
@@ -481,7 +481,7 @@ function ProjectCard({ project }) {
       </div>
 
       {/* Tab switcher */}
-      <div className="flex border-b border-stone-100" role="tablist" aria-label="Project details">
+      <div className="flex border-b border-white/20" role="tablist" aria-label="Project details">
         {PROJECT_TABS.map((tab) => (
           <button
             key={tab}
@@ -492,7 +492,7 @@ function ProjectCard({ project }) {
             className={`flex-1 px-4 py-3.5 text-sm font-medium transition-all duration-200 border-b-2 ${
               activeTab === tab
                 ? 'border-indigo-500 text-indigo-600 bg-indigo-50/60'
-                : 'border-transparent text-stone-400 hover:text-stone-700 hover:bg-stone-50'
+                : 'border-transparent text-stone-500 hover:text-stone-800 hover:bg-white/15'
             }`}
           >
             {PROJECT_TAB_LABELS[tab]}
@@ -512,7 +512,7 @@ function ProjectsSection() {
   const [ref, visible] = useScrollReveal()
 
   return (
-    <section id="projects" className="py-24 bg-stone-50/80 backdrop-blur-sm">
+    <section id="projects" className="py-24 bg-white/5">
       <div ref={ref} className="max-w-6xl mx-auto px-6">
 
         <div className={`mb-14 ${visible ? 'animate-fade-up' : 'opacity-0'}`}>
@@ -542,7 +542,7 @@ function ProjectsSection() {
 
 function Footer() {
   return (
-    <footer id="contact" className="bg-white/90 backdrop-blur-sm border-t border-stone-100 py-14">
+    <footer id="contact" className="bg-white/10 backdrop-blur-lg border-t border-white/20 py-14">
       <div className="max-w-6xl mx-auto px-6">
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
@@ -559,14 +559,14 @@ function Footer() {
               href={LINKS.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-stone-200 text-stone-500 hover:border-indigo-300 hover:text-indigo-600 text-sm transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-stone-700 hover:border-indigo-400/60 hover:text-indigo-700 text-sm transition-all duration-200"
             >
               <Linkedin size={15} aria-hidden="true" />
               LinkedIn
             </a>
             <a
               href={`mailto:${LINKS.email}`}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-stone-200 text-stone-500 hover:border-indigo-300 hover:text-indigo-600 text-sm transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-stone-700 hover:border-indigo-400/60 hover:text-indigo-700 text-sm transition-all duration-200"
             >
               <Mail size={15} aria-hidden="true" />
               Email
@@ -576,7 +576,7 @@ function Footer() {
               href={LINKS.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-50 border border-indigo-200 text-indigo-600 text-sm font-medium hover:bg-indigo-100 hover:border-indigo-300 transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/50 text-indigo-900 text-sm font-medium hover:bg-indigo-500/30 hover:border-indigo-500/60 transition-all duration-200"
             >
               <Download size={15} aria-hidden="true" />
               Resume
@@ -584,7 +584,7 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-stone-100 pt-6">
+        <div className="border-t border-white/20 pt-6">
           <p className="text-stone-400 text-xs font-mono">
             © {new Date().getFullYear()} Alfred Johnson. All rights reserved.
           </p>
