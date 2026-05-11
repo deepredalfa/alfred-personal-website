@@ -35,6 +35,18 @@ const LINKS = {
 
 const NAV_ITEMS = ['About', 'Stack', 'Projects', 'Contact']
 
+// Words that cycle through the split-flap board in the hero
+const FLAP_WORDS = [
+  'Azure Databricks',
+  'Apache Spark',
+  'Delta Lake',
+  'Unity Catalog',
+  'Python',
+  'PySpark',
+  'Dimension Modelling',
+  'Medallion Architecture',
+]
+
 // UPDATE: Personal intro copy
 const INTRO = {
   name:  'Alfred Johnson.',
@@ -183,6 +195,79 @@ function useScrollReveal(threshold = 0.08) {
   }, [])
 
   return [ref, visible]
+}
+
+// ─── SPLIT-FLAP BOARD ─────────────────────────────────────────────────────────
+// Directly manipulates the DOM via refs for animation performance.
+// Fixed board width = length of the longest word so layout never shifts.
+
+function SplitFlapBoard({ words }) {
+  const containerRef = useRef(null)
+
+  useEffect(() => {
+    const container = containerRef.current
+    const CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789 '
+    const maxLen = Math.max(...words.map(w => w.toUpperCase().length))
+    const activeIntervals = []
+
+    // Build the fixed-width grid of flap elements
+    container.innerHTML = ''
+    for (let i = 0; i < maxLen; i++) {
+      const flap = document.createElement('span')
+      flap.className = 'sf-flap'
+      flap.setAttribute('aria-hidden', 'true')
+      flap.textContent = ' '
+      container.appendChild(flap)
+    }
+
+    function transitionTo(word) {
+      const flaps = container.querySelectorAll('.sf-flap')
+      const padded = word.toUpperCase().padEnd(maxLen, ' ')
+
+      flaps.forEach((flap, idx) => {
+        const target = padded[idx]
+        if (flap.textContent === target) return   // skip unchanged flaps
+
+        let count = 0
+        // Stagger: left columns land first, right columns keep spinning longer
+        const totalCycles = 4 + idx * 2
+
+        flap.classList.add('sf-spinning')
+
+        const iv = setInterval(() => {
+          flap.textContent = CHARS[Math.floor(Math.random() * CHARS.length)]
+          if (++count >= totalCycles) {
+            clearInterval(iv)
+            flap.textContent = target
+            flap.classList.remove('sf-spinning')
+          }
+        }, 55)
+
+        activeIntervals.push(iv)
+      })
+    }
+
+    let wordIdx = 0
+    const cycle = () => {
+      transitionTo(words[wordIdx])
+      wordIdx = (wordIdx + 1) % words.length
+    }
+
+    cycle()
+    const loopIv = setInterval(cycle, 4000)
+    activeIntervals.push(loopIv)
+
+    return () => activeIntervals.forEach(clearInterval)
+  }, [])
+
+  return (
+    <div
+      ref={containerRef}
+      className="sf-board"
+      role="status"
+      aria-label="Technology currently featured"
+    />
+  )
 }
 
 // ─── GLOBAL BACKGROUND ────────────────────────────────────────────────────────
@@ -337,15 +422,15 @@ function IntroSection() {
           {INTRO.name}
         </h1>
 
-        {/* Title */}
-        <p className="text-xl md:text-2xl text-stone-700 font-light mb-10">
-          {INTRO.title}
-        </p>
-
-        {/* Bio — two short paragraphs, warm and direct */}
-        <div className="max-w-xl space-y-4 mb-12">
-          <p className="text-stone-800 text-lg leading-8 text-justify hyphens-auto">{INTRO.bio1}</p>
-          <p className="text-stone-700 text-base leading-7 tracking-wide">{INTRO.bio2}</p>
+        {/* Impact sentence + split-flap board */}
+        <div className="mb-12">
+          <p className="text-stone-800 text-lg md:text-xl font-medium leading-8 mb-5">
+            I build high-scale data pipelines and ecosystems with
+          </p>
+          {/* overflow-x:auto is a safety net on very small screens */}
+          <div className="overflow-x-auto pb-1">
+            <SplitFlapBoard words={FLAP_WORDS} />
+          </div>
         </div>
 
         {/* CTAs */}

@@ -31,3 +31,60 @@
     display: none;
   }
 }
+
+/* ─── SPLIT-FLAP BOARD ─────────────────────────────────────────────────────── */
+
+.sf-board {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 2px;
+  perspective: 600px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.sf-flap {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  /* Fluid sizing — scales from small mobile up to desktop without wrapping */
+  font-size:   clamp(0.6rem,  2.1vw, 1.15rem);
+  width:       clamp(0.78rem, 2.8vw, 1.48rem);
+  height:      clamp(1.35rem, 4.7vw, 2.4rem);
+
+  font-family: 'JetBrains Mono', 'Fira Code', monospace;
+  font-weight: 700;
+  line-height: 1;
+  color: #2dd4bf;
+
+  /* Charcoal background with a 1 px dark split-line at the exact vertical centre */
+  background-image: linear-gradient(
+    to bottom,
+    #1e293b                      0%,
+    #1e293b        calc(50% - 0.6px),
+    rgba(0,0,0,0.65) calc(50% - 0.6px),
+    rgba(0,0,0,0.65) calc(50% + 0.6px),
+    #1e293b        calc(50% + 0.6px),
+    #1e293b                    100%
+  );
+
+  border: 1px solid rgba(45, 212, 191, 0.14);
+  border-radius: 3px;
+  box-shadow:
+    0 3px 7px rgba(0, 0, 0, 0.50),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* 3-D flip keyframe — rotates the plate, dims at the "edge-on" moment */
+@keyframes sf-flip {
+  0%   { transform: rotateX(0deg);   filter: brightness(1);    }
+  42%  { transform: rotateX(-90deg); filter: brightness(0.40); }
+  58%  { transform: rotateX(-90deg); filter: brightness(0.40); }
+  100% { transform: rotateX(0deg);   filter: brightness(1);    }
+}
+
+.sf-spinning {
+  animation: sf-flip 0.11s ease-in-out infinite;
+  color: rgba(45, 212, 191, 0.60);
+}
