@@ -248,67 +248,99 @@ function WordFlipBoard({ words }) {
 }
 
 // ─── GLOBAL BACKGROUND ────────────────────────────────────────────────────────
-// position:fixed so the blobs drift behind every section as the user scrolls.
+// Canvas particle network — dots drift and draw lines to nearby neighbours.
+// Colours pulled from the site accent palette (indigo / violet / sky / teal).
+
+const PARTICLE_COLORS = [
+  '99,102,241',  // indigo
+  '139,92,246',  // violet
+  '56,189,248',  // sky
+  '45,212,191',  // teal
+  '167,139,250', // purple
+  '96,165,250',  // blue
+]
 
 function GlobalBackground() {
+  const canvasRef = useRef(null)
+
+  useEffect(() => {
+    const canvas = canvasRef.current
+    const ctx = canvas.getContext('2d')
+    let animId
+    let W, H, particles
+
+    const COUNT = 80
+    const LINK_DIST = 160
+    const SPEED = 0.35
+
+    function resize() {
+      W = canvas.width  = window.innerWidth
+      H = canvas.height = window.innerHeight
+    }
+
+    function init() {
+      particles = Array.from({ length: COUNT }, () => ({
+        x:     Math.random() * W,
+        y:     Math.random() * H,
+        vx:    (Math.random() - 0.5) * SPEED,
+        vy:    (Math.random() - 0.5) * SPEED,
+        r:     Math.random() * 1.8 + 1.2,
+        color: PARTICLE_COLORS[Math.floor(Math.random() * PARTICLE_COLORS.length)],
+      }))
+    }
+
+    function frame() {
+      ctx.clearRect(0, 0, W, H)
+
+      for (const p of particles) {
+        p.x += p.vx
+        p.y += p.vy
+        if (p.x < 0 || p.x > W) p.vx *= -1
+        if (p.y < 0 || p.y > H) p.vy *= -1
+      }
+
+      // Lines between nearby pairs
+      for (let i = 0; i < particles.length; i++) {
+        for (let j = i + 1; j < particles.length; j++) {
+          const a = particles[i], b = particles[j]
+          const dx = a.x - b.x, dy = a.y - b.y
+          const dist = Math.sqrt(dx * dx + dy * dy)
+          if (dist < LINK_DIST) {
+            const alpha = (1 - dist / LINK_DIST) * 0.45
+            ctx.beginPath()
+            ctx.moveTo(a.x, a.y)
+            ctx.lineTo(b.x, b.y)
+            ctx.strokeStyle = `rgba(${a.color},${alpha})`
+            ctx.lineWidth = 0.8
+            ctx.stroke()
+          }
+        }
+      }
+
+      // Dots
+      for (const p of particles) {
+        ctx.beginPath()
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2)
+        ctx.fillStyle = `rgba(${p.color},0.75)`
+        ctx.fill()
+      }
+
+      animId = requestAnimationFrame(frame)
+    }
+
+    function onResize() { resize(); init() }
+
+    resize()
+    init()
+    frame()
+    window.addEventListener('resize', onResize)
+    return () => { cancelAnimationFrame(animId); window.removeEventListener('resize', onResize) }
+  }, [])
+
   return (
-    <div aria-hidden="true" className="fixed inset-0 -z-10 overflow-hidden pointer-events-none">
-      {/* Base fill */}
+    <div aria-hidden="true" className="fixed inset-0 -z-10 pointer-events-none">
       <div className="absolute inset-0 bg-stone-50" />
-
-      {/*
-        Aurora blobs — radial gradients so colour is vivid at the core and dissolves
-        to transparent at the edges. blur-[80-100px] spreads without washing out the hue.
-        Five blobs, four animation tracks, all desynchronised so they never align.
-      */}
-
-      {/* Indigo → violet — top-left anchor */}
-      <div
-        className="absolute -top-64 -left-48 w-[900px] h-[800px] rounded-full blur-[80px]"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.65) 0%, rgba(139,92,246,0.35) 45%, transparent 72%)',
-          animation: 'aurora-1 5s ease-in-out infinite, hue-shift 6s linear infinite',
-        }}
-      />
-
-      {/* Sky → cyan — top-right */}
-      <div
-        className="absolute -top-32 -right-48 w-[800px] h-[700px] rounded-full blur-[70px]"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(56,189,248,0.60) 0%, rgba(34,211,238,0.32) 45%, transparent 72%)',
-          animation: 'aurora-2 7s ease-in-out infinite, hue-shift 8s linear infinite',
-        }}
-      />
-
-      {/* Violet → fuchsia — centre drift */}
-      <div
-        className="absolute top-[40%] left-[20%] w-[750px] h-[750px] rounded-full blur-[90px]"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(167,139,250,0.60) 0%, rgba(217,70,239,0.32) 45%, transparent 72%)',
-          animation: 'aurora-3 4s ease-in-out infinite, hue-shift 7s linear infinite',
-        }}
-      />
-
-      {/* Emerald → teal — bottom-right */}
-      <div
-        className="absolute bottom-0 right-[10%] w-[800px] h-[650px] rounded-full blur-[80px]"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(52,211,153,0.58) 0%, rgba(45,212,191,0.30) 45%, transparent 72%)',
-          animation: 'aurora-4 6s ease-in-out infinite, hue-shift 9s linear infinite',
-        }}
-      />
-
-      {/* Blue → indigo — bottom-left, offset */}
-      <div
-        className="absolute -bottom-32 -left-24 w-[650px] h-[650px] rounded-full blur-[75px]"
-        style={{
-          background: 'radial-gradient(ellipse at center, rgba(96,165,250,0.62) 0%, rgba(99,102,241,0.32) 45%, transparent 72%)',
-          animation: 'aurora-2 7s ease-in-out infinite -12s, hue-shift 10s linear infinite',
-        }}
-      />
-
-      {/* Subtle dot grid — faint technical texture sits on top of the colour wash */}
-      <div className="absolute inset-0 bg-[radial-gradient(circle,#6366f112_1px,transparent_1px)] bg-[size:28px_28px]" />
+      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </div>
   )
 }
