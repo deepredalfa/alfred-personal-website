@@ -186,9 +186,9 @@ const DOT_COLOR = {
 // Reads localStorage + OS preference, toggles .dark on <html>, persists choice.
 function useDarkMode() {
   const [dark, setDark] = useState(() =>
-    typeof window !== 'undefined' &&
-    (localStorage.getItem('theme') === 'dark' ||
-      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches))
+    typeof window !== 'undefined'
+      ? localStorage.getItem('theme') !== 'light'
+      : true
   )
 
   useEffect(() => {
@@ -366,7 +366,19 @@ function GlobalBackground() {
 
 // ─── NAVBAR ───────────────────────────────────────────────────────────────────
 
-function Navbar({ dark, toggleDark }) {
+function DarkToggle({ dark, toggleDark }) {
+  return (
+    <button
+      onClick={toggleDark}
+      className="fixed top-4 right-4 z-[60] p-2.5 rounded-full border border-white/30 dark:border-slate-600/40 bg-white/20 dark:bg-slate-800/40 backdrop-blur-sm text-stone-700 dark:text-stone-300 hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 shadow-sm transition-all duration-200"
+      aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+    >
+      {dark ? <Sun size={16} /> : <Moon size={16} />}
+    </button>
+  )
+}
+
+function Navbar() {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [scrolled, setScrolled]     = useState(false)
 
@@ -400,41 +412,23 @@ function Navbar({ dark, toggleDark }) {
           ))}
         </ul>
 
-        {/* Desktop: dark toggle + Hire Me */}
-        <div className="hidden md:flex items-center gap-3">
-          <button
-            onClick={toggleDark}
-            className="p-2 rounded-lg border border-white/30 dark:border-slate-600/40 bg-white/10 dark:bg-slate-800/30 text-stone-700 dark:text-stone-300 hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 transition-all duration-200"
-            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {dark ? <Sun size={16} /> : <Moon size={16} />}
-          </button>
-          <a
-            href={`mailto:${LINKS.email}`}
-            className="text-sm px-4 py-2 rounded-lg border border-white/30 dark:border-slate-600/40 bg-white/10 dark:bg-slate-800/30 text-stone-800 dark:text-stone-200 font-medium hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 transition-all duration-200"
-          >
-            Hire Me
-          </a>
-        </div>
+        {/* Hire Me */}
+        <a
+          href={`mailto:${LINKS.email}`}
+          className="hidden md:inline-flex text-sm px-4 py-2 rounded-lg border border-white/30 dark:border-slate-600/40 bg-white/10 dark:bg-slate-800/30 text-stone-800 dark:text-stone-200 font-medium hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 transition-all duration-200"
+        >
+          Hire Me
+        </a>
 
-        {/* Mobile: dark toggle + hamburger */}
-        <div className="md:hidden flex items-center gap-1">
-          <button
-            onClick={toggleDark}
-            className="p-2 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors"
-            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
-          >
-            {dark ? <Sun size={18} /> : <Moon size={18} />}
-          </button>
-          <button
-            className="p-2 -mr-2 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors"
-            onClick={() => setDrawerOpen(!drawerOpen)}
-            aria-label="Toggle menu"
-            aria-expanded={drawerOpen}
-          >
-            {drawerOpen ? <X size={20} /> : <Menu size={20} />}
-          </button>
-        </div>
+        {/* Mobile hamburger */}
+        <button
+          className="md:hidden p-2 -mr-2 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors"
+          onClick={() => setDrawerOpen(!drawerOpen)}
+          aria-label="Toggle menu"
+          aria-expanded={drawerOpen}
+        >
+          {drawerOpen ? <X size={20} /> : <Menu size={20} />}
+        </button>
       </nav>
 
       {/* Mobile drawer */}
@@ -752,7 +746,8 @@ export default function App() {
   return (
     <div className="min-h-screen">
       <GlobalBackground />
-      <Navbar dark={dark} toggleDark={toggleDark} />
+      <DarkToggle dark={dark} toggleDark={toggleDark} />
+      <Navbar />
       <main>
         <IntroSection />
         <TechStackSection />
