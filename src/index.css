@@ -32,6 +32,37 @@
   }
 }
 
+/* ─── AURORA BLOB KEYFRAMES ────────────────────────────────────────────────── */
+/* Defined here (not in tailwind.config.js) so they survive Tailwind's purge.  */
+
+@keyframes aurora-1 {
+  0%, 100% { transform: translate(0px,    0px)   scale(1);    }
+  25%      { transform: translate(70px,  -90px)  scale(1.08); }
+  50%      { transform: translate(-50px,  70px)  scale(0.94); }
+  75%      { transform: translate(90px,   50px)  scale(1.05); }
+}
+@keyframes aurora-2 {
+  0%, 100% { transform: translate(0px,    0px)   scale(1);    }
+  25%      { transform: translate(-80px,  60px)  scale(0.91); }
+  50%      { transform: translate(60px,  -80px)  scale(1.09); }
+  75%      { transform: translate(-40px, -40px)  scale(0.96); }
+}
+@keyframes aurora-3 {
+  0%, 100% { transform: translate(0px,    0px)   scale(1);    }
+  33%      { transform: translate(100px,  70px)  scale(1.07); }
+  66%      { transform: translate(-70px, -50px)  scale(0.93); }
+}
+@keyframes aurora-4 {
+  0%, 100% { transform: translate(0px,    0px)   scale(1);    }
+  25%      { transform: translate(-60px, -70px)  scale(1.1);  }
+  50%      { transform: translate(80px,   50px)  scale(0.92); }
+  75%      { transform: translate(-30px,  90px)  scale(1.06); }
+}
+@keyframes hue-shift {
+  0%   { filter: hue-rotate(0deg);   }
+  100% { filter: hue-rotate(360deg); }
+}
+
 /* ─── WORD-FLIP BOARD ──────────────────────────────────────────────────────── */
 
 /* Perspective wrapper — baseline-aligned so the word sits flush with surrounding text */
