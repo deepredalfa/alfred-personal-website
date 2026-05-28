@@ -269,8 +269,6 @@ function GlobalBackground() {
     let animId
     let W, H, particles
 
-    const COUNT = 80
-    const LINK_DIST = 160
     const SPEED = 0.35
 
     function resize() {
@@ -279,7 +277,11 @@ function GlobalBackground() {
     }
 
     function init() {
+      const mobile = W < 768
+      const COUNT     = mobile ? 35  : 80
+      const LINK_DIST = mobile ? 100 : 160
       particles = Array.from({ length: COUNT }, () => ({
+        _linkDist: LINK_DIST,
         x:     Math.random() * W,
         y:     Math.random() * H,
         vx:    (Math.random() - 0.5) * SPEED,
@@ -305,8 +307,8 @@ function GlobalBackground() {
           const a = particles[i], b = particles[j]
           const dx = a.x - b.x, dy = a.y - b.y
           const dist = Math.sqrt(dx * dx + dy * dy)
-          if (dist < LINK_DIST) {
-            const alpha = (1 - dist / LINK_DIST) * 0.45
+          if (dist < a._linkDist) {
+            const alpha = (1 - dist / a._linkDist) * 0.45
             ctx.beginPath()
             ctx.moveTo(a.x, a.y)
             ctx.lineTo(b.x, b.y)
@@ -502,7 +504,7 @@ function TechStackSection() {
   const [ref, visible] = useScrollReveal()
 
   return (
-    <section id="stack" className="py-24 bg-white/10 backdrop-blur-lg">
+    <section id="stack" className="py-24 bg-white/5">
       <div className="max-w-6xl mx-auto px-6">
 
         {/* Section header */}
@@ -629,7 +631,7 @@ function ProjectsSection() {
   const [ref, visible] = useScrollReveal()
 
   return (
-    <section id="projects" className="py-24 bg-white/5">
+    <section id="projects" className="py-24 bg-transparent">
       <div ref={ref} className="max-w-6xl mx-auto px-6">
 
         <div className={`mb-14 ${visible ? 'animate-fade-up' : 'opacity-0'}`}>
@@ -655,7 +657,7 @@ function ProjectsSection() {
 
 function Footer() {
   return (
-    <footer id="contact" className="bg-white/10 backdrop-blur-lg border-t border-white/20 py-14">
+    <footer id="contact" className="bg-white/5 border-t border-white/20 py-14">
       <div className="max-w-6xl mx-auto px-6">
 
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
