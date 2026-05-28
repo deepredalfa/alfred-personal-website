@@ -58,6 +58,8 @@
   will-change: transform, filter;
 }
 
+.dark .wf-card { color: #818cf8; }
+
 .wf-out {
   animation: wf-flip-out 0.09s ease-in forwards;
 }

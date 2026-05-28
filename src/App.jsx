@@ -20,7 +20,7 @@ import {
   Terminal, Layers, Code2, Server, Cloud, Workflow,
   Activity, Shield, Network, Database, Users,
   Github, Linkedin, Mail, Download, FolderOpen,
-  Menu, X, ArrowUpRight,
+  Menu, X, ArrowUpRight, Moon, Sun,
 } from 'lucide-react'
 
 // ─── SITE DATA ────────────────────────────────────────────────────────────────
@@ -182,6 +182,23 @@ const DOT_COLOR = {
   teal:    'bg-teal-400',
 }
 
+// ─── DARK MODE HOOK ───────────────────────────────────────────────────────────
+// Reads localStorage + OS preference, toggles .dark on <html>, persists choice.
+function useDarkMode() {
+  const [dark, setDark] = useState(() =>
+    typeof window !== 'undefined' &&
+    (localStorage.getItem('theme') === 'dark' ||
+      (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches))
+  )
+
+  useEffect(() => {
+    document.documentElement.classList.toggle('dark', dark)
+    localStorage.setItem('theme', dark ? 'dark' : 'light')
+  }, [dark])
+
+  return [dark, () => setDark(d => !d)]
+}
+
 // ─── SHARED HOOK ─────────────────────────────────────────────────────────────
 // Fires once when the observed element enters the viewport, then disconnects.
 function useScrollReveal(threshold = 0.08) {
@@ -341,7 +358,7 @@ function GlobalBackground() {
 
   return (
     <div aria-hidden="true" className="fixed inset-0 -z-10 pointer-events-none">
-      <div className="absolute inset-0 bg-stone-50" />
+      <div className="absolute inset-0 bg-stone-50 dark:bg-[#0a0a18] transition-colors duration-300" />
       <canvas ref={canvasRef} className="absolute inset-0 w-full h-full" />
     </div>
   )
@@ -349,7 +366,7 @@ function GlobalBackground() {
 
 // ─── NAVBAR ───────────────────────────────────────────────────────────────────
 
-function Navbar() {
+function Navbar({ dark, toggleDark }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const [scrolled, setScrolled]     = useState(false)
 
@@ -363,7 +380,7 @@ function Navbar() {
     <header
       className={`fixed top-0 inset-x-0 z-50 transition-all duration-300 ${
         scrolled
-          ? 'bg-white/10 backdrop-blur-xl border-b border-white/20'
+          ? 'bg-white/10 dark:bg-slate-900/60 backdrop-blur-xl border-b border-white/20 dark:border-slate-700/40'
           : 'bg-transparent'
       }`}
     >
@@ -375,7 +392,7 @@ function Navbar() {
             <li key={item.id}>
               <a
                 href={`#${item.id}`}
-                className="text-sm text-stone-800 hover:text-stone-950 transition-colors font-medium"
+                className="text-sm text-stone-800 dark:text-stone-200 hover:text-stone-950 dark:hover:text-white transition-colors font-medium"
               >
                 {item.label}
               </a>
@@ -383,42 +400,60 @@ function Navbar() {
           ))}
         </ul>
 
-        {/* Hire Me */}
-        <a
-          href={`mailto:${LINKS.email}`}
-          className="hidden md:inline-flex text-sm px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-stone-800 font-medium hover:border-indigo-400/60 hover:text-indigo-700 transition-all duration-200"
-        >
-          Hire Me
-        </a>
+        {/* Desktop: dark toggle + Hire Me */}
+        <div className="hidden md:flex items-center gap-3">
+          <button
+            onClick={toggleDark}
+            className="p-2 rounded-lg border border-white/30 dark:border-slate-600/40 bg-white/10 dark:bg-slate-800/30 text-stone-700 dark:text-stone-300 hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 transition-all duration-200"
+            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {dark ? <Sun size={16} /> : <Moon size={16} />}
+          </button>
+          <a
+            href={`mailto:${LINKS.email}`}
+            className="text-sm px-4 py-2 rounded-lg border border-white/30 dark:border-slate-600/40 bg-white/10 dark:bg-slate-800/30 text-stone-800 dark:text-stone-200 font-medium hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 transition-all duration-200"
+          >
+            Hire Me
+          </a>
+        </div>
 
-        {/* Mobile toggle */}
-        <button
-          className="md:hidden p-2 -mr-2 text-stone-700 hover:text-stone-950 transition-colors"
-          onClick={() => setDrawerOpen(!drawerOpen)}
-          aria-label="Toggle menu"
-          aria-expanded={drawerOpen}
-        >
-          {drawerOpen ? <X size={20} /> : <Menu size={20} />}
-        </button>
+        {/* Mobile: dark toggle + hamburger */}
+        <div className="md:hidden flex items-center gap-1">
+          <button
+            onClick={toggleDark}
+            className="p-2 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors"
+            aria-label={dark ? 'Switch to light mode' : 'Switch to dark mode'}
+          >
+            {dark ? <Sun size={18} /> : <Moon size={18} />}
+          </button>
+          <button
+            className="p-2 -mr-2 text-stone-700 dark:text-stone-300 hover:text-stone-950 dark:hover:text-white transition-colors"
+            onClick={() => setDrawerOpen(!drawerOpen)}
+            aria-label="Toggle menu"
+            aria-expanded={drawerOpen}
+          >
+            {drawerOpen ? <X size={20} /> : <Menu size={20} />}
+          </button>
+        </div>
       </nav>
 
       {/* Mobile drawer */}
       {drawerOpen && (
-        <div className="md:hidden bg-white/10 backdrop-blur-xl border-b border-white/20">
+        <div className="md:hidden bg-white/10 dark:bg-slate-900/80 backdrop-blur-xl border-b border-white/20 dark:border-slate-700/40">
           <div className="max-w-6xl mx-auto px-6 py-5 flex flex-col gap-3">
             {NAV_ITEMS.map((item) => (
               <a
                 key={item.id}
                 href={`#${item.id}`}
                 onClick={() => setDrawerOpen(false)}
-                className="text-sm font-medium text-stone-700 hover:text-indigo-600 transition-colors py-1"
+                className="text-sm font-medium text-stone-700 dark:text-stone-300 hover:text-indigo-600 dark:hover:text-indigo-400 transition-colors py-1"
               >
                 {item.label}
               </a>
             ))}
             <a
               href={`mailto:${LINKS.email}`}
-              className="text-sm px-4 py-2.5 rounded-lg border border-white/30 bg-white/10 text-stone-800 text-center hover:border-indigo-400/60 hover:text-indigo-700 transition-all"
+              className="text-sm px-4 py-2.5 rounded-lg border border-white/30 dark:border-slate-600/40 bg-white/10 dark:bg-slate-800/30 text-stone-800 dark:text-stone-200 text-center hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 transition-all"
             >
               Hire Me
             </a>
@@ -439,14 +474,14 @@ function IntroSection() {
       <div className="relative max-w-6xl mx-auto px-6 pt-28 pb-20 w-full">
 
         {/* Greeting — sits close to the name so they read as one natural intro */}
-        <p className="text-stone-600 text-lg font-light mb-2">Hi, I'm</p>
+        <p className="text-stone-600 dark:text-stone-400 text-lg font-light mb-2">Hi, I'm</p>
 
-        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-stone-900 tracking-tight leading-[1.06] mb-5">
+        <h1 className="text-5xl sm:text-6xl md:text-7xl font-bold text-stone-900 dark:text-stone-50 tracking-tight leading-[1.06] mb-5">
           {INTRO.name}
         </h1>
 
         {/* Impact sentence — board sits inline so the line wraps naturally on mobile */}
-        <p className="text-stone-800 text-lg md:text-xl font-medium leading-loose mb-12">
+        <p className="text-stone-800 dark:text-stone-200 text-lg md:text-xl font-medium leading-loose mb-12">
           I build high-scale data pipelines and ecosystems using{' '}
           <WordFlipBoard words={FLAP_WORDS} />
         </p>
@@ -458,7 +493,7 @@ function IntroSection() {
           <a
             href="#projects"
             aria-label="My Projects"
-            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-indigo-400/50 bg-indigo-500/15 backdrop-blur-sm text-indigo-900 font-semibold text-sm hover:bg-indigo-500/25 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-indigo-400/50 bg-indigo-500/15 backdrop-blur-sm text-indigo-900 dark:text-indigo-300 font-semibold text-sm hover:bg-indigo-500/25 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             <FolderOpen size={28} className="md:hidden" aria-hidden="true" />
             <FolderOpen size={16} className="hidden md:block shrink-0" aria-hidden="true" />
@@ -471,7 +506,7 @@ function IntroSection() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label="Connect on LinkedIn"
-            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-violet-400/50 bg-violet-500/15 backdrop-blur-sm text-violet-900 font-semibold text-sm hover:bg-violet-500/25 hover:border-violet-500/60 hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-violet-400/50 bg-violet-500/15 backdrop-blur-sm text-violet-900 dark:text-violet-300 font-semibold text-sm hover:bg-violet-500/25 hover:border-violet-500/60 hover:shadow-lg hover:shadow-violet-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             <Linkedin size={28} className="md:hidden" aria-hidden="true" />
             <Linkedin size={16} className="hidden md:block shrink-0" aria-hidden="true" />
@@ -482,7 +517,7 @@ function IntroSection() {
           <a
             href="#stack"
             aria-label="Skill Set"
-            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-teal-400/50 bg-teal-500/15 backdrop-blur-sm text-teal-900 font-semibold text-sm hover:bg-teal-500/25 hover:border-teal-500/60 hover:shadow-lg hover:shadow-teal-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
+            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-teal-400/50 bg-teal-500/15 backdrop-blur-sm text-teal-900 dark:text-teal-300 font-semibold text-sm hover:bg-teal-500/25 hover:border-teal-500/60 hover:shadow-lg hover:shadow-teal-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
           >
             <Layers size={28} className="md:hidden" aria-hidden="true" />
             <Layers size={16} className="hidden md:block shrink-0" aria-hidden="true" />
@@ -509,7 +544,7 @@ function TechStackSection() {
 
         {/* Section header */}
         <div className="mb-10">
-          <span className="text-xs font-mono text-indigo-700 tracking-widest uppercase">Skill Set</span>
+          <span className="text-xs font-mono text-indigo-700 dark:text-indigo-400 tracking-widest uppercase">Skill Set</span>
         </div>
 
         {/*
@@ -519,14 +554,14 @@ function TechStackSection() {
           Hover effect uses an inset box-shadow for the left accent line —
           avoids layout shift that a real border-left would cause.
         */}
-        <div ref={ref} className="divide-y divide-white/25">
+        <div ref={ref} className="divide-y divide-white/25 dark:divide-white/10">
           {TECH_CATEGORIES.map((cat, i) => (
             <div
               key={cat.id}
               className={[
                 'group flex gap-6 md:gap-12 py-4 -mx-4 px-4 rounded-xl',
                 'transition-all duration-200',
-                'hover:bg-white/20 hover:shadow-[inset_3px_0_0_#a5b4fc]',
+                'hover:bg-white/20 dark:hover:bg-white/8 hover:shadow-[inset_3px_0_0_#a5b4fc]',
                 visible ? 'animate-fade-up' : 'opacity-0',
               ].join(' ')}
               style={{ animationDelay: `${i * 0.04}s` }}
@@ -537,13 +572,13 @@ function TechStackSection() {
                   className={`w-1.5 h-1.5 rounded-full mt-[5px] shrink-0 ${DOT_COLOR[cat.accent]}`}
                   aria-hidden="true"
                 />
-                <span className="text-[10px] font-mono text-stone-600 uppercase tracking-widest leading-snug group-hover:text-stone-900 transition-colors">
+                <span className="text-[10px] font-mono text-stone-600 dark:text-stone-400 uppercase tracking-widest leading-snug group-hover:text-stone-900 dark:group-hover:text-stone-100 transition-colors">
                   {cat.label}
                 </span>
               </div>
 
               {/* Skills as inline text — no boxes, separated by · */}
-              <p className="text-sm text-stone-800 leading-7 flex-1">
+              <p className="text-sm text-stone-800 dark:text-stone-300 leading-7 flex-1">
                 {cat.skills.join('  ·  ')}
               </p>
             </div>
@@ -561,24 +596,24 @@ function ProjectCard({ project }) {
   const [activeTab, setActiveTab] = useState('problem')
 
   return (
-    <article className="rounded-2xl border border-white/30 bg-white/15 backdrop-blur-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20">
+    <article className="rounded-2xl border border-white/30 dark:border-white/10 bg-white/15 dark:bg-white/5 backdrop-blur-lg overflow-hidden transition-all duration-300 hover:-translate-y-1 hover:shadow-xl hover:shadow-indigo-500/20">
 
       {/* Indigo top accent bar */}
       <div className="h-[3px] bg-gradient-to-r from-indigo-500 via-violet-500 to-sky-500" aria-hidden="true" />
 
       {/* Card header */}
-      <div className="p-6 md:p-8 border-b border-white/20">
+      <div className="p-6 md:p-8 border-b border-white/20 dark:border-white/10">
         <div className="flex flex-col sm:flex-row sm:items-start justify-between gap-4 mb-4">
           <div>
-            <span className="text-xs font-mono text-stone-600 mb-1.5 block">{project.year}</span>
-            <h3 className="text-xl font-bold text-stone-900 leading-snug">{project.title}</h3>
-            <p className="text-sm text-stone-700 mt-1.5 max-w-lg leading-6 text-justify hyphens-auto">{project.subtitle}</p>
+            <span className="text-xs font-mono text-stone-600 dark:text-stone-400 mb-1.5 block">{project.year}</span>
+            <h3 className="text-xl font-bold text-stone-900 dark:text-stone-100 leading-snug">{project.title}</h3>
+            <p className="text-sm text-stone-700 dark:text-stone-400 mt-1.5 max-w-lg leading-6 text-justify hyphens-auto">{project.subtitle}</p>
           </div>
           <a
             href={project.github}
             target="_blank"
             rel="noopener noreferrer"
-            className="self-start shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/30 bg-white/10 text-stone-700 hover:border-indigo-400/60 hover:text-indigo-700 text-xs font-medium transition-all"
+            className="self-start shrink-0 flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-white/30 dark:border-white/15 bg-white/10 dark:bg-white/5 text-stone-700 dark:text-stone-400 hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 text-xs font-medium transition-all"
             aria-label={`View ${project.title} on GitHub`}
           >
             <Github size={13} aria-hidden="true" />
@@ -591,7 +626,7 @@ function ProjectCard({ project }) {
           {project.tags.map((tag) => (
             <span
               key={tag}
-              className="px-2.5 py-1 rounded-md bg-white/15 text-stone-700 text-xs font-mono border border-white/25"
+              className="px-2.5 py-1 rounded-md bg-white/15 dark:bg-white/5 text-stone-700 dark:text-stone-400 text-xs font-mono border border-white/25 dark:border-white/10"
             >
               {tag}
             </span>
@@ -600,7 +635,7 @@ function ProjectCard({ project }) {
       </div>
 
       {/* Tab switcher */}
-      <div className="flex border-b border-white/20" role="tablist" aria-label="Project details">
+      <div className="flex border-b border-white/20 dark:border-white/10" role="tablist" aria-label="Project details">
         {PROJECT_TABS.map((tab) => (
           <button
             key={tab}
@@ -610,8 +645,8 @@ function ProjectCard({ project }) {
             onClick={() => setActiveTab(tab)}
             className={`flex-1 px-4 py-3.5 text-sm font-medium transition-all duration-200 border-b-2 ${
               activeTab === tab
-                ? 'border-indigo-500 text-indigo-600 bg-indigo-50/60'
-                : 'border-transparent text-stone-700 hover:text-stone-950 hover:bg-white/15'
+                ? 'border-indigo-500 text-indigo-600 dark:text-indigo-400 bg-indigo-50/60 dark:bg-indigo-900/30'
+                : 'border-transparent text-stone-700 dark:text-stone-400 hover:text-stone-950 dark:hover:text-stone-100 hover:bg-white/15 dark:hover:bg-white/8'
             }`}
           >
             {PROJECT_TAB_LABELS[tab]}
@@ -621,7 +656,7 @@ function ProjectCard({ project }) {
 
       {/* Tab content */}
       <div id={`${project.id}-${activeTab}`} role="tabpanel" className="p-6 md:p-8">
-        <p className="text-stone-800 text-sm leading-7 text-justify hyphens-auto">{project.tabs[activeTab]}</p>
+        <p className="text-stone-800 dark:text-stone-300 text-sm leading-7 text-justify hyphens-auto">{project.tabs[activeTab]}</p>
       </div>
     </article>
   )
@@ -635,7 +670,7 @@ function ProjectsSection() {
       <div ref={ref} className="max-w-6xl mx-auto px-6">
 
         <div className={`mb-14 ${visible ? 'animate-fade-up' : 'opacity-0'}`}>
-          <span className="text-xs font-mono text-indigo-700 tracking-widest uppercase">Interesting Works</span>
+          <span className="text-xs font-mono text-indigo-700 dark:text-indigo-400 tracking-widest uppercase">Interesting Works</span>
         </div>
 
         <div
@@ -663,7 +698,7 @@ function Footer() {
         <div className="flex flex-col md:flex-row items-start md:items-center justify-between gap-8 mb-10">
           {/* Tagline */}
           <div>
-            <p className="text-stone-700 text-sm max-w-xs leading-7 tracking-wide">
+            <p className="text-stone-700 dark:text-stone-400 text-sm max-w-xs leading-7 tracking-wide">
               Let's connect and build something great.
             </p>
           </div>
@@ -674,14 +709,14 @@ function Footer() {
               href={LINKS.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-stone-700 hover:border-indigo-400/60 hover:text-indigo-700 text-sm transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/30 dark:border-white/15 bg-white/10 dark:bg-white/5 text-stone-700 dark:text-stone-400 hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 text-sm transition-all duration-200"
             >
               <Linkedin size={15} aria-hidden="true" />
               LinkedIn
             </a>
             <a
               href={`mailto:${LINKS.email}`}
-              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/30 bg-white/10 text-stone-700 hover:border-indigo-400/60 hover:text-indigo-700 text-sm transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg border border-white/30 dark:border-white/15 bg-white/10 dark:bg-white/5 text-stone-700 dark:text-stone-400 hover:border-indigo-400/60 hover:text-indigo-700 dark:hover:text-indigo-400 text-sm transition-all duration-200"
             >
               <Mail size={15} aria-hidden="true" />
               Email
@@ -691,7 +726,7 @@ function Footer() {
               href={LINKS.resume}
               target="_blank"
               rel="noopener noreferrer"
-              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-500/20 border border-indigo-400/50 text-indigo-900 text-sm font-medium hover:bg-indigo-500/30 hover:border-indigo-500/60 transition-all duration-200"
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-indigo-500/20 dark:bg-indigo-500/15 border border-indigo-400/50 dark:border-indigo-400/30 text-indigo-900 dark:text-indigo-300 text-sm font-medium hover:bg-indigo-500/30 hover:border-indigo-500/60 transition-all duration-200"
             >
               <Download size={15} aria-hidden="true" />
               Resume
@@ -699,8 +734,8 @@ function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-white/20 pt-6">
-          <p className="text-stone-600 text-xs font-mono">
+        <div className="border-t border-white/20 dark:border-white/10 pt-6">
+          <p className="text-stone-600 dark:text-stone-500 text-xs font-mono">
             © {new Date().getFullYear()} Alfred Johnson. Ctrl+C is highly encouraged ;)
           </p>
         </div>
@@ -713,10 +748,11 @@ function Footer() {
 // ─── APP ──────────────────────────────────────────────────────────────────────
 
 export default function App() {
+  const [dark, toggleDark] = useDarkMode()
   return (
     <div className="min-h-screen">
       <GlobalBackground />
-      <Navbar />
+      <Navbar dark={dark} toggleDark={toggleDark} />
       <main>
         <IntroSection />
         <TechStackSection />
