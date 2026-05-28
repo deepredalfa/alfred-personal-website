@@ -262,36 +262,48 @@ function GlobalBackground() {
         Five blobs, four animation tracks, all desynchronised so they never align.
       */}
 
-      {/* Indigo → violet — top-left anchor, 22 s */}
+      {/* Indigo → violet — top-left anchor */}
       <div
-        className="absolute -top-64 -left-48 w-[900px] h-[800px] rounded-full blur-[90px] animate-aurora-1"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.28) 0%, rgba(139,92,246,0.14) 45%, transparent 72%)' }}
+        className="absolute -top-64 -left-48 w-[900px] h-[800px] rounded-full blur-[90px]"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(99,102,241,0.28) 0%, rgba(139,92,246,0.14) 45%, transparent 72%)',
+          animation: 'aurora-1 5s ease-in-out infinite, hue-shift 12s linear infinite',
+        }}
       />
 
-      {/* Sky → cyan — top-right, 28 s */}
+      {/* Sky → cyan — top-right */}
       <div
-        className="absolute -top-32 -right-48 w-[800px] h-[700px] rounded-full blur-[80px] animate-aurora-2"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(56,189,248,0.25) 0%, rgba(34,211,238,0.13) 45%, transparent 72%)' }}
+        className="absolute -top-32 -right-48 w-[800px] h-[700px] rounded-full blur-[80px]"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(56,189,248,0.25) 0%, rgba(34,211,238,0.13) 45%, transparent 72%)',
+          animation: 'aurora-2 7s ease-in-out infinite, hue-shift 16s linear infinite',
+        }}
       />
 
-      {/* Violet → fuchsia — centre drift, 18 s */}
+      {/* Violet → fuchsia — centre drift */}
       <div
-        className="absolute top-[40%] left-[20%] w-[750px] h-[750px] rounded-full blur-[100px] animate-aurora-3"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(167,139,250,0.25) 0%, rgba(217,70,239,0.11) 45%, transparent 72%)' }}
+        className="absolute top-[40%] left-[20%] w-[750px] h-[750px] rounded-full blur-[100px]"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(167,139,250,0.25) 0%, rgba(217,70,239,0.11) 45%, transparent 72%)',
+          animation: 'aurora-3 4s ease-in-out infinite, hue-shift 10s linear infinite',
+        }}
       />
 
-      {/* Emerald → teal — bottom-right, 25 s */}
+      {/* Emerald → teal — bottom-right */}
       <div
-        className="absolute bottom-0 right-[10%] w-[800px] h-[650px] rounded-full blur-[90px] animate-aurora-4"
-        style={{ background: 'radial-gradient(ellipse at center, rgba(52,211,153,0.22) 0%, rgba(45,212,191,0.12) 45%, transparent 72%)' }}
+        className="absolute bottom-0 right-[10%] w-[800px] h-[650px] rounded-full blur-[90px]"
+        style={{
+          background: 'radial-gradient(ellipse at center, rgba(52,211,153,0.22) 0%, rgba(45,212,191,0.12) 45%, transparent 72%)',
+          animation: 'aurora-4 6s ease-in-out infinite, hue-shift 14s linear infinite',
+        }}
       />
 
-      {/* Blue → indigo — bottom-left, offset on aurora-2 track */}
+      {/* Blue → indigo — bottom-left, offset */}
       <div
-        className="absolute -bottom-32 -left-24 w-[650px] h-[650px] rounded-full blur-[85px] animate-aurora-2"
+        className="absolute -bottom-32 -left-24 w-[650px] h-[650px] rounded-full blur-[85px]"
         style={{
           background: 'radial-gradient(ellipse at center, rgba(96,165,250,0.24) 0%, rgba(99,102,241,0.12) 45%, transparent 72%)',
-          animationDelay: '-12s',
+          animation: 'aurora-2 7s ease-in-out infinite -12s, hue-shift 18s linear infinite',
         }}
       />
 

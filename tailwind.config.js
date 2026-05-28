@@ -56,6 +56,10 @@ export default {
           '50%':      { transform: 'translate(80px,   50px)  scale(0.92)' },
           '75%':      { transform: 'translate(-30px,  90px)  scale(1.06)' },
         },
+        'hue-shift': {
+          '0%':   { filter: 'hue-rotate(0deg)'   },
+          '100%': { filter: 'hue-rotate(360deg)' },
+        },
       },
       animation: {
         'blob-1':    'blob-1   9s  ease-in-out infinite',
