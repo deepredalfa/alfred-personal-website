@@ -34,10 +34,9 @@ const LINKS = {
 }
 
 const NAV_ITEMS = [
-  { label: 'About',     id: 'about'    },
-  { label: 'Skill Set', id: 'stack'    },
-  { label: 'Projects',  id: 'projects' },
-  { label: 'Contact',   id: 'contact'  },
+  { label: 'About',     id: 'about'   },
+  { label: 'Skill Set', id: 'stack'   },
+  { label: 'Contact',   id: 'contact' },
 ]
 
 // Words that cycle through the word-flip board in the hero
@@ -483,17 +482,6 @@ function IntroSection() {
         {/* CTAs — icon-only on mobile (28px), icon + label on desktop */}
         <div className="flex flex-nowrap gap-3">
 
-          {/* Projects */}
-          <a
-            href="#projects"
-            aria-label="My Projects"
-            className="inline-flex items-center justify-center p-4 md:gap-2 md:px-6 md:py-3.5 rounded-xl border border-indigo-400/50 bg-indigo-500/15 backdrop-blur-sm text-indigo-900 dark:text-indigo-300 font-semibold text-sm hover:bg-indigo-500/25 hover:border-indigo-500/60 hover:shadow-lg hover:shadow-indigo-500/20 transition-all duration-200 hover:-translate-y-0.5 active:translate-y-0"
-          >
-            <FolderOpen size={28} className="md:hidden" aria-hidden="true" />
-            <FolderOpen size={16} className="hidden md:block shrink-0" aria-hidden="true" />
-            <span className="hidden md:inline">{INTRO.cta1}</span>
-          </a>
-
           {/* LinkedIn */}
           <a
             href={LINKS.linkedin}
@@ -751,7 +739,6 @@ export default function App() {
       <main>
         <IntroSection />
         <TechStackSection />
-        <ProjectsSection />
       </main>
       <Footer />
     </div>
